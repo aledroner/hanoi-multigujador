@@ -26,7 +26,6 @@ a {
 }
 /* $Header
  -------------------------*/
-
 .header {
 	font-size: 1em;
 
@@ -62,7 +61,6 @@ a {
 }
 /* $Main
  -------------------------*/
-
 .main-container {
 	display: flex;
 	flex-direction: column;
@@ -74,24 +72,39 @@ a {
 	display: flex;
 	flex-direction: column;
 	padding: 1em;
+
 	.game {
 		padding: 2em 0;
+
 		.player {
 			width: 50%;
-			h3.title-player {
-				text-align: center;
+
+			.title-player {
+				img {
+					width: 42px;
+					height: 42px;
+					border-radius: 50%;
+					border: 2px solid $ligth_grey;
+				}
+				h3 {
+					margin: 0 0 0 .3em;
+				}
 			}
+
 			&:first-child {
 				border-right: 1px solid $ligth_grey;
 			}
+
 			.canvas {
 				height: 300px;
 			}
+
 			.controls button {
 				width: 100px;
 				margin: 0 1.3em;
 				cursor: pointer;
-				transition: all .1s;
+				transition: all 0.1s;
+
 				&:hover {
 					background-color: darken($ligth_grey, 10);
 					transform: scale(1.05);
@@ -102,7 +115,6 @@ a {
 }
 /* $Auxiliar
  -------------------------*/
-
 .bg_main_color {
 	background-color: $main_color;
 }

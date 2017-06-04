@@ -8,6 +8,16 @@ function getId(id) {
 }
 
 /**
+ * Escribe texto HTML en un elemento
+ * @param  {[type]} id   [description]
+ * @param  {[type]} text [description]
+ * @return {[type]}      [description]
+ */
+function inner(id, text) {
+	getId(id).innerHTML = text;
+}
+
+/**
  * Cambia el display de un elemento del DOM
  * @param  {[type]} id      [description]
  * @param  {[type]} display [description]
@@ -33,7 +43,7 @@ function getRef(node) {
  * @return {[type]}       [description]
  */
 function getChild(node, child) {
-	return firebase.database().ref(node).child(child);
+	return getRef(node).child(child);
 }
 
 /**
