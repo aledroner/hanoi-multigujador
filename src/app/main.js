@@ -6,15 +6,26 @@ angular
 			const vm = this;
 
 			/**
-			 * Inicia sesión anónimamente
+			 * Inicia sesión con google
 			 */
 			vm.signIn = function() {
-				firebase.auth().signInAnonymously()
-					.then(function() {
-						toastr.success('¡Bienbenido a Torres de Hanoi!')
+				var provider = new firebase.auth.GoogleAuthProvider();
+				firebase.auth().signInWithPopup(provider)
+					.then(function(result) {
+						var profile = result.additionalUserInfo.profile;
+						var uid = result.user.uid;
+						var user = {
+							profile: {
+								email: profile.email,
+								name: profile.given_name,
+								picture: profile.picture,
+							}
+						};
+						createUser(uid, user);
+						toastr.success('¡Bienvenido ' + user.name + '!');
 					})
 					.catch(function(error) {
-						toastr.success('Ha ocurrido un error')
+						toastr.error(error.message);
 					});
 			}
 

@@ -15,12 +15,14 @@ window.onload = function() {
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
 			console.log(user);
-			getId('btn-signIn').style.display = 'none';
-			getId('btn-signOut').style.display = 'block';
+			toggle('btn-signIn', 'none');
+			toggle('btn-signOut', 'block');
+			toggle('game', 'block');
 		} else {
 			console.log('no logueado');
-			getId('btn-signIn').style.display = 'block';
-			getId('btn-signOut').style.display = 'none';
+			toggle('btn-signIn', 'block');
+			toggle('btn-signOut', 'none');
+			toggle('game', 'block');
 		}
 	});
 };
