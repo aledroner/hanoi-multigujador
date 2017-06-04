@@ -5,6 +5,7 @@ body,
 html {
 	margin: 0;
 	height: 100%;
+	color: $grey !important;
 	font-family: 'Roboto', 'Open Sans', sans-serif;
 }
 
@@ -23,26 +24,11 @@ a {
 		color: #5aadbb;
 	}
 }
-/* $Main
- -------------------------*/
-
-.main-container {
-	display: flex;
-	flex-direction: column;
-	min-height: 100%;
-}
-
-.main {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
 /* $Header
  -------------------------*/
 
 .header {
 	font-size: 1em;
-	color: $grey;
 
 	.logo {
 		margin-right: 1.4em;
@@ -70,6 +56,46 @@ a {
 			&:hover {
 				color: $black !important;
 				border-bottom-color: lighten($main_color, 20);
+			}
+		}
+	}
+}
+/* $Main
+ -------------------------*/
+
+.main-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+.main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 1em;
+	.game {
+		padding: 2em 0;
+		.player {
+			width: 50%;
+			h3.title-player {
+				text-align: center;
+			}
+			&:first-child {
+				border-right: 1px solid $ligth_grey;
+			}
+			.canvas {
+				height: 300px;
+			}
+			.controls button {
+				width: 100px;
+				margin: 0 1.3em;
+				cursor: pointer;
+				transition: all .1s;
+				&:hover {
+					background-color: darken($ligth_grey, 10);
+					transform: scale(1.05);
+				}
 			}
 		}
 	}
