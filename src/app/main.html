@@ -26,22 +26,22 @@
 			<div class="game d-flex flex-row">
 				<div id="player1" class="player">
 					<div class="title-player d-flex justify-content-center align-items-center">
-						<img id="player1-picture" src="app/img/user.png">
+						<img id="player1-picture" class="turn" src="app/img/user.png">
 						<h3 id="player1-name">Jugador 1</h3>
 					</div>
 					<div id="canvasP1" class="canvas">
 
 					</div>
 					<nav class="controls text-center">
-						<button id="accion1" class="btn">Coger</button>
-				<button id="accion2" class="btn">Coger</button>
-				<button id="accion3" class="btn">Coger</button>
+						<button id="accion1" class="btn scale">Coger</button>
+				<button id="accion2" class="btn scale">Coger</button>
+				<button id="accion3" class="btn scale">Coger</button>
 				</nav>
 			</div>
 
 			<div id="player2" class="player">
 				<div class="title-player d-flex justify-content-center align-items-center">
-					<img id="player2-picture" src="app/img/user.png">
+					<img id="player2-picture" class="turn" src="app/img/user.png">
 					<h3 id="player2-name">Jugador 2</h3>
 				</div>
 				<div id="canvasP1" class="canvas">
@@ -53,7 +53,7 @@
 		<div id="games-online">
 			<div class="games-online-title d-flex justify-content-between">
 				<h4>Partidas online</h4>
-				<button type="button" class="btn btn-primary"><span class="fa fa-plus"></span>&nbsp; Crear partida </button>
+				<button type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida </button>
 			</div>
 			<div class="games-online">
 				<table class="table">
@@ -70,7 +70,7 @@
 							<th scope="row">1</th>
 							<td>Mark</td>
 							<td>Otto</td>
-							<td><button type="button" class="btn btn-success">Unirse</button></td>
+							<td><button type="button" class="btn btn-primary scale">Unirse</button></td>
 						</tr>
 					</tbody>
 				</table>
