@@ -59,17 +59,17 @@
 				<table class="table">
 					<thead class="thead-default">
 						<tr>
-							<th>#</th>
+							<th># Id</th>
 							<th>Jugador 1</th>
 							<th>Jugador 2</th>
 							<th>Unirse / Ver</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
+						<tr ng-repeat="game in $ctrl.gamesOnline">
+							<th scope="row">{{game.id}}</th>
+							<td>{{game.player1.profile.name}}</td>
+							<td>{{game.player2.profile.name}}</td>
 							<td><button type="button" class="btn btn-success scale">Unirse</button></td>
 						</tr>
 					</tbody>

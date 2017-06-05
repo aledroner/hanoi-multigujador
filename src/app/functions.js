@@ -103,11 +103,16 @@ function createGame(uid) {
 	getRef('users/' + uid)
 		.on('value', function(snap) {
 			var user = snap.val();
-			var game = {
-				player1: user,
-				player2: 'Esperando...'
-			}
 			var idGame = randomId();
+			var game = {
+				id: idGame,
+				player1: user,
+				player2: {
+					profile: {
+						name: 'Esperando...'
+					}
+				}
+			}
 			firebase.database().ref('games-online/' + idGame).set(game);
 		});
 }
@@ -117,7 +122,7 @@ function createGame(uid) {
  * @return {[type]} [description]
  */
 function randomId() {
-	var abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'y', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ];
+	var abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'y', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 	var id = '';
 	for (var i = 0; i < 6; i++) {
 		if (rand(0, 1) % 2 == 0)

@@ -2,7 +2,7 @@ angular
 	.module('hanoi.main', [])
 	.component('app', {
 		templateUrl: 'app/main.html',
-		controller: function(toastr) {
+		controller: function(toastr, $timeout) {
 			const vm = this;
 
 			/**
@@ -21,6 +21,7 @@ angular
 					.catch(function(error) {
 						toastr.error(error.message);
 					});
+				actualizarArray();
 			}
 
 			/**
@@ -44,5 +45,31 @@ angular
 				createGame(vm.currentUserId);
 			}
 
+			/**
+			 * Actualiza el array de partidas online
+			 * @param  {[type]} data [description]
+			 * @return {[type]}      [description]
+			 */
+			getRef('games-online').on('value', function(data) {
+				$timeout(function() {
+					vm.gamesOnline = data.val();
+				});
+			});
+
+
 		}
 	});
+// .controller('mainCtrl', ['$scope', function($scope) {
+// 	getRef('games-online').on('value', function(data) {
+// 		$scope.gamesOnline = data.val();
+// 	});
+// 	// getRef('games-online').on('child_added', function(data) {
+// 	// 	vm.gamesOnline.push(data.val());
+// 	// });
+// 	// getRef('games-online').on('child_changed', function(data) {
+// 	// 	vm.gamesOnline = data.val();
+// 	// });
+// 	// getRef('games-online').on('child_removed', function(data) {
+// 	// 	vm.gamesOnline = data.val();
+// 	// });
+// }]);
