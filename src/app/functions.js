@@ -94,12 +94,22 @@ function refresh(player, user) {
 		});
 }
 
+/**
+ * Crea una nueva partida
+ * @param  {[type]} uid [description]
+ * @return {[type]}     [description]
+ */
 function createGame(uid) {
-	// var game = {
-	//
-	// }
-	// firebase.database().ref('games-online/' + uid).set(user);
-	console.log(randomId());
+	getRef('users/' + uid)
+		.on('value', function(snap) {
+			var user = snap.val();
+			var game = {
+				player1: user,
+				player2: 'Esperando...'
+			}
+			var idGame = randomId();
+			firebase.database().ref('games-online/' + idGame).set(game);
+		});
 }
 
 /**

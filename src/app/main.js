@@ -40,9 +40,8 @@ angular
 			 * @return {[type]} [description]
 			 */
 			vm.crearPartida = function() {
-				vm.currentUser = firebase.auth().currentUser.uid;
-				createGame(vm.currentUser);
-
+				vm.currentUserId = firebase.auth().currentUser.uid;
+				createGame(vm.currentUserId);
 			}
 
 		}
