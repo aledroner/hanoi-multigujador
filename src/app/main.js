@@ -35,5 +35,15 @@ angular
 					});
 			}
 
+			/**
+			 * Crea una partida nueva multijugador
+			 * @return {[type]} [description]
+			 */
+			vm.crearPartida = function() {
+				vm.currentUser = firebase.auth().currentUser.uid;
+				createGame(vm.currentUser);
+
+			}
+
 		}
 	});

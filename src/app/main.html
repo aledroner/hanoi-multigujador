@@ -53,7 +53,7 @@
 		<div id="games-online">
 			<div class="games-online-title d-flex justify-content-between">
 				<h4>Partidas online</h4>
-				<button type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida </button>
+				<button ng-click="$ctrl.crearPartida()" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida </button>
 			</div>
 			<div class="games-online">
 				<table class="table">
@@ -70,7 +70,7 @@
 							<th scope="row">1</th>
 							<td>Mark</td>
 							<td>Otto</td>
-							<td><button type="button" class="btn btn-primary scale">Unirse</button></td>
+							<td><button type="button" class="btn btn-success scale">Unirse</button></td>
 						</tr>
 					</tbody>
 				</table>
