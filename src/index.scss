@@ -24,12 +24,16 @@ a {
 		color: #5aadbb;
 	}
 }
+button {
+	cursor: pointer;
+}
 /* $Header
  -------------------------*/
 .header {
 	font-size: 1em;
 
 	.logo {
+		display: none;
 		margin-right: 1.4em;
 	}
 
@@ -72,49 +76,63 @@ a {
 	display: flex;
 	flex-direction: column;
 	padding: 3em 2em;
+}
+/* $Game
+ -------------------------*/
 
-	.game {
-		.player {
-			width: 50%;
+#game {
+	display: none;
 
-			.title-player {
-				img {
-					width: 42px;
-					height: 42px;
-					border-radius: 50%;
-					border: 2px solid $ligth_grey;
-				}
+	.player {
+		width: 50%;
 
-				h3 {
-					margin: 0 0 0 0.3em;
-				}
+		.title-player {
+			img {
+				width: 42px;
+				height: 42px;
+				border-radius: 50%;
+				border: 2px solid $ligth_grey;
 			}
 
-			&:first-child {
-				border-right: 1px solid $ligth_grey;
-			}
-
-			.canvas {
-				height: 300px;
-			}
-
-			.controls button {
-				width: 100px;
-				margin: 0 1.3em;
-				cursor: pointer;
-				transition: all 0.1s;
-
-				&:hover {
-					background-color: darken($ligth_grey, 10);
-					transform: scale(1.05);
-				}
+			h3 {
+				margin: 0 0 0 0.3em;
 			}
 		}
+
+		&:first-child {
+			border-right: 1px solid $ligth_grey;
+		}
+
+		.canvas {
+			height: 300px;
+		}
+
+		.controls button {
+			width: 100px;
+			margin: 0 1.3em;
+			transition: all 0.1s;
+
+			&:hover {
+				background-color: darken($ligth_grey, 10);
+				transform: scale(1.05);
+			}
+		}
+	}
+}
+/* $Game-online
+ -------------------------*/
+
+#games-online {
+	display: none;
+	margin: 4em 0;
+	.games-online-title {
+		margin-bottom:  .8em;
 	}
 }
 /* $LogIn
  -------------------------*/
 .logIn {
+	display: none;
 	padding: 3em;
 	width: 400px;
 	border: 1px solid $ligth_grey;
@@ -132,7 +150,6 @@ a {
 		padding: 0.8em;
 		border: none;
 		outline: 0;
-		cursor: pointer;
 		border-radius: 2px;
 
 		&:active {

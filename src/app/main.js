@@ -37,26 +37,3 @@ angular
 
 		}
 	});
-
-/**
- * Crea un objeto usuario dependiendo de la red social
- * @param {[type]} social [description]
- * @param {[type]} result [description]
- */
-function setUser(social, result) {
-	if (social === 't') {
-		return user = {
-			profile: {
-				name: result.additionalUserInfo.profile.screen_name,
-				picture: result.additionalUserInfo.profile.profile_image_url
-			}
-		};
-	} else if (social === 'g') {
-		return user = {
-			profile: {
-				name: result.additionalUserInfo.profile.given_name,
-				picture: result.additionalUserInfo.profile.picture
-			}
-		};
-	}
-}

@@ -17,12 +17,14 @@ window.onload = function() {
 			toggle('logIn', 'none');
 			toggle('btn-signOut', 'block');
 			toggle('game', 'block');
+			toggle('games-online', 'block');
 			refresh('player1', user);
 		} else {
 			console.log('no logueado');
 			toggle('logIn', 'block');
 			toggle('btn-signOut', 'none');
 			toggle('game', 'none');
+			toggle('games-online', 'none');
 		}
 	});
 };
