@@ -55,3 +55,18 @@ function getChild(node, child) {
 function createUser(uid, user) {
 	firebase.database().ref('users/' + uid).set(user);
 }
+
+/**
+ * Actualiza los datos de un jugador
+ * @param  {[type]} player [description]
+ * @param  {[type]} user   [description]
+ * @return {[type]}        [description]
+ */
+function refresh(player, user) {
+	getChild('users/' + user.uid, 'profile')
+		.on('value', function(snap) {
+			var profile = snap.val();
+			inner(player + '-name', profile.name);
+			getId(player + '-picture').src = profile.picture;
+		});
+}

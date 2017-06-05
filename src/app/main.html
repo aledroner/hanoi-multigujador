@@ -5,7 +5,6 @@
 				<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
 				<h2 class="header-title" id="header-title"></h2>
 				<div class="log-buttons d-flex ml-auto">
-					<a ng-click="$ctrl.signIn()" id="btn-signIn" class="nav-links">Login &nbsp;<span class="fa fa-sign-in"></span></a>
 					<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión &nbsp;<span class="fa fa-sign-out"></span></a>
 				</div>
 			</nav>
@@ -13,25 +12,36 @@
 	</header>
 	<main class="main">
 
-		<div id="game" class="game d-flex flex-row">
-			<div id="player1" class="player">
-				<div class="title-player d-flex justify-content-center align-items-center">
-					<img id="player1-picture" src="asd">
-					<h3 id="player1-name">Jugador 1</h3>
-				</div>
-				<div id="canvasP1" class="canvas">
+		<div id="logIn" class="logIn bg_light_grey">
+			<div class="d-flex flex-column align-items-center">
+				<h3>Inicia sesión</h3>
+				<button ng-click="$ctrl.signIn('t')" type="button" class="btn btn-primary btn-lg btn-block bg_twitter">
+					<span class="fa fa-twitter"></span>&nbsp; Twitter
+				<button ng-click="$ctrl.signIn('g')" type="button" class="btn btn-primary btn-lg btn-block bg_google">
+					<span class="fa fa-google"></span>&nbsp; Google
+			</div>
+		</div>
 
-				</div>
-				<nav class="controls text-center">
-					<button id="accion1" class="btn">Coger</button>
-					<button id="accion2" class="btn">Coger</button>
-					<button id="accion3" class="btn">Coger</button>
+		<div id="game">
+			<div class="game d-flex flex-row">
+				<div id="player1" class="player">
+					<div class="title-player d-flex justify-content-center align-items-center">
+						<img id="player1-picture" src="app/img/user.png">
+						<h3 id="player1-name">Jugador 1</h3>
+					</div>
+					<div id="canvasP1" class="canvas">
+
+					</div>
+					<nav class="controls text-center">
+						<button id="accion1" class="btn">Coger</button>
+				<button id="accion2" class="btn">Coger</button>
+				<button id="accion3" class="btn">Coger</button>
 				</nav>
 			</div>
 
 			<div id="player2" class="player">
-				<div class="title-player d-flex justify-content-center">
-					<img id="player2-picture" src="asd">
+				<div class="title-player d-flex justify-content-center align-items-center">
+					<img id="player2-picture" src="app/img/user.png">
 					<h3 id="player2-name">Jugador 2</h3>
 				</div>
 				<div id="canvasP1" class="canvas">
@@ -39,9 +49,10 @@
 				</div>
 			</div>
 		</div>
+</div>
 
-	</main>
-	<footer class="footer">
+</main>
+<footer class="footer">
 
-	</footer>
+</footer>
 </div>

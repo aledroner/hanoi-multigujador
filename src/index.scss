@@ -71,11 +71,9 @@ a {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	padding: 1em;
+	padding: 3em 2em;
 
 	.game {
-		padding: 2em 0;
-
 		.player {
 			width: 50%;
 
@@ -86,8 +84,9 @@ a {
 					border-radius: 50%;
 					border: 2px solid $ligth_grey;
 				}
+
 				h3 {
-					margin: 0 0 0 .3em;
+					margin: 0 0 0 0.3em;
 				}
 			}
 
@@ -109,6 +108,50 @@ a {
 					background-color: darken($ligth_grey, 10);
 					transform: scale(1.05);
 				}
+			}
+		}
+	}
+}
+/* $LogIn
+ -------------------------*/
+.logIn {
+	padding: 3em;
+	width: 400px;
+	border: 1px solid $ligth_grey;
+	border-radius: 0.4em;
+	margin: 0 auto;
+
+	h3 {
+		margin-bottom: 1em;
+	}
+
+	.btn {
+		position: relative;
+		margin: 0.5em 0;
+		font-size: 1.6em;
+		padding: 0.8em;
+		border: none;
+		outline: 0;
+		cursor: pointer;
+		border-radius: 2px;
+
+		&:active {
+			top: 3px;
+		}
+
+		&.bg_twitter {
+			box-shadow: 0 3px 0 darken($twitter, 10);
+
+			&:active {
+				box-shadow: none;
+			}
+		}
+
+		&.bg_google {
+			box-shadow: 0 3px 0 darken($google, 20);
+
+			&:active {
+				box-shadow: none;
 			}
 		}
 	}
@@ -139,7 +182,30 @@ a {
 	background-color: $ligther_grey;
 }
 
+.bg_twitter {
+	background-color: $twitter !important;
+
+	&:hover {
+		background-color: darken($twitter, 3) !important;
+	}
+}
+
+.bg_google {
+	background-color: $google !important;
+
+	&:hover {
+		background-color: darken($google, 8) !important;
+	}
+}
+
 .active {
 	font-weight: 500;
 	border-bottom-color: $main_color !important;
+}
+
+.jellos:hover {
+	-webkit-animation-name: jello;
+	animation-name: jello;
+	-webkit-transform-origin: center;
+	transform-origin: center;
 }

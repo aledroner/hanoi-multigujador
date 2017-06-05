@@ -14,24 +14,15 @@ window.onload = function() {
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
 			console.log(user);
-
-			toggle('btn-signIn', 'none');
+			toggle('logIn', 'none');
 			toggle('btn-signOut', 'block');
 			toggle('game', 'block');
-
-			getChild('users/' + user.uid, 'profile')
-				.on('value', function(snap) {
-					var profile = snap.val();
-					inner('player1-name', profile.name);
-					getId('player1-picture').src = profile.picture;
-				});
-
-
+			refresh('player1', user);
 		} else {
 			console.log('no logueado');
-			toggle('btn-signIn', 'block');
+			toggle('logIn', 'block');
 			toggle('btn-signOut', 'none');
-			toggle('game', 'block');
+			toggle('game', 'none');
 		}
 	});
 };
