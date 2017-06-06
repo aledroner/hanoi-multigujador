@@ -28,3 +28,18 @@ window.onload = function() {
 		}
 	});
 };
+
+/**
+ * Actualiza los datos de un jugador
+ * @param  {[type]} player [description]
+ * @param  {[type]} user   [description]
+ * @return {[type]}        [description]
+ */
+function refresh(player, user) {
+	getChild('users/' + user.uid, 'profile')
+		.on('value', function(snap) {
+			var profile = snap.val();
+			inner(player + '-name', profile.name);
+			getId(player + '-picture').src = profile.picture;
+		});
+}

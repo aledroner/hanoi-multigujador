@@ -14,14 +14,13 @@ angular
 				if (social === 'g') provider = new firebase.auth.GoogleAuthProvider();
 				firebase.auth().signInWithPopup(provider)
 					.then(function(result) {
-						var user = setUser(social, result);
-						createUser(result.user.uid, user);
+						var user = createUser(social, result);
+						setUser(result.user.uid, user);
 						toastr.success('¡Bienvenido ' + user.profile.name + '!');
 					})
 					.catch(function(error) {
 						toastr.error(error.message);
 					});
-				actualizarArray();
 			}
 
 			/**
@@ -42,7 +41,7 @@ angular
 			 */
 			vm.crearPartida = function() {
 				vm.currentUserId = firebase.auth().currentUser.uid;
-				createGame(vm.currentUserId);
+				setGame(vm.currentUserId);
 			}
 
 			/**
@@ -55,7 +54,5 @@ angular
 					vm.gamesOnline = data.val();
 				});
 			});
-
-
 		}
 	});
