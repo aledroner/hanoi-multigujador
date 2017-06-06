@@ -10,7 +10,7 @@ angular
 			closeButton: true,
 			extendedTimeOut: 2000,
 			tapToDismiss: true,
-			positionClass: 'toast-bottom-center',
+			positionClass: 'toast-top-left',
 			preventOpenDuplicates: true
 		});
 	});

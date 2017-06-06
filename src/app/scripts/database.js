@@ -32,21 +32,36 @@ function setUser(uid, user) {
  * @param  {[type]} uid [description]
  * @return {[type]}     [description]
  */
-function setGame(uid) {
+function setGame(uid, gameId) {
 	getRef('users/' + uid)
 		.on('value', function(snap) {
 			var user = snap.val();
-			var idGame = randomId();
 			var game = {
-				id: idGame,
+				date: new Date().getTime(),
+				id: gameId,
 				player1: user,
 				player2: {
 					profile: {
-						name: 'Esperando...'
+						name: 'Esperando...',
+						picture: '/app/img/user.png'
 					}
 				}
 			}
-			firebase.database().ref('games-online/' + idGame).set(game);
+			firebase.database().ref('games-online/' + gameId).set(game);
+		});
+}
+
+/**
+ * Jugador 2 se une a una partida creada
+ * @param  {[type]} uid    [description]
+ * @param  {[type]} gameId [description]
+ * @return {[type]}        [description]
+ */
+function joinGame(uid, gameId) {
+	getRef('users/' + uid)
+		.on('value', function(snap) {
+			var user = snap.val();
+			firebase.database().ref('games-online/' + gameId + '/player2').set(user);
 		});
 }
 
@@ -59,6 +74,7 @@ function createUser(social, result) {
 	if (social === 't') {
 		return user = {
 			profile: {
+				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.screen_name,
 				picture: result.additionalUserInfo.profile.profile_image_url
 			}
@@ -66,6 +82,7 @@ function createUser(social, result) {
 	} else if (social === 'g') {
 		return user = {
 			profile: {
+				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.given_name,
 				picture: result.additionalUserInfo.profile.picture
 			}

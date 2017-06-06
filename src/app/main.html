@@ -2,9 +2,11 @@
 	<header class="header bg_light_grey">
 		<div class="container">
 			<nav class="navbar d-flex flex-row justify-content-start align-items-center">
-				<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
-				<h2 class="header-title" id="header-title"></h2>
-				<div class="log-buttons d-flex ml-auto">
+				<a ui-sref="app({game:undefined})" class="animated infinite jellos">
+					<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
+				</a>
+				<a class="header-title" ui-sref="app({game:undefined})">Hanoi</a>
+				<div class="log-buttons d-flex ml-auto" ng-if="$ctrl.stateParams.log==true">
 					<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión &nbsp;<span class="fa fa-sign-out"></span></a>
 				</div>
 			</nav>
@@ -12,7 +14,7 @@
 	</header>
 	<main class="main" class="d-flex">
 
-		<div id="logIn" class="logIn bg_light_grey">
+		<div id="logIn" class="logIn bg_light_grey" ng-if="$ctrl.stateParams.log==false">
 			<div class="d-flex flex-column align-items-center">
 				<h3>Inicia sesión</h3>
 				<button ng-click="$ctrl.signIn('t')" type="button" class="btn btn-primary btn-lg btn-block bg_twitter">
@@ -22,43 +24,46 @@
 			</div>
 		</div>
 
-		<div id="game">
+		<div id="game" ng-if="$ctrl.stateParams.log==true && $ctrl.stateParams.game!=undefined">
 			<div class="game d-flex flex-row">
+
 				<div id="player1" class="player">
 					<div class="title-player d-flex justify-content-center align-items-center">
-						<img id="player1-picture" class="turn" src="app/img/user.png">
+						<img id="player1-picture" class="turn player-picture" src="app/img/user.png">
 						<h3 id="player1-name">Jugador 1</h3>
 					</div>
 					<div id="canvasP1" class="canvas">
 
 					</div>
 					<nav class="controls text-center">
-						<button id="accion1" class="btn scale">Coger</button>
-				<button id="accion2" class="btn scale">Coger</button>
-				<button id="accion3" class="btn scale">Coger</button>
-				</nav>
-			</div>
-
-			<div id="player2" class="player">
-				<div class="title-player d-flex justify-content-center align-items-center">
-					<img id="player2-picture" class="turn" src="app/img/user.png">
-					<h3 id="player2-name">Jugador 2</h3>
+						<button id="accion1" class="btn scale">Coger
+						<button id="accion2" class="btn scale">Coger
+						<button id="accion3" class="btn scale">Coger
+					</nav>
 				</div>
-				<div id="canvasP1" class="canvas">
 
+				<div id="player2" class="player">
+					<div class="title-player d-flex justify-content-center align-items-center">
+						<img id="player2-picture" class="turn player-picture" src="app/img/user.png">
+						<h3 id="player2-name">Jugador 2</h3>
+					</div>
+					<div id="canvasP1" class="canvas">
+
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<div id="games-online">
+		<div id="games-online" ng-if="$ctrl.stateParams.log==true && $ctrl.stateParams.game==null">
 			<div class="games-online-title d-flex justify-content-between">
 				<h4>Partidas online</h4>
-				<button ng-click="$ctrl.crearPartida()" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida </button>
+				<button ng-click="$ctrl.crearPartida()" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
 			</div>
 			<div class="games-online">
 				<table class="table">
 					<thead class="thead-default">
 						<tr>
+							<th width="50" class="text-center">Hora</th>
 							<th># Id</th>
 							<th>Jugador 1</th>
 							<th>Jugador 2</th>
@@ -66,11 +71,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="game in $ctrl.gamesOnline">
+						<tr ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date'">
+							<th><span class="hour">{{game.date | date : 'HH:mm:ss'}}</span></th>
 							<th scope="row">{{game.id}}</th>
-							<td>{{game.player1.profile.name}}</td>
-							<td>{{game.player2.profile.name}}</td>
-							<td><button type="button" class="btn btn-success scale">Unirse</button></td>
+							<td><img class="turn player-picture" ng-src="{{game.player1.profile.picture}}">{{game.player1.profile.name}}</td>
+							<td><img class="turn player-picture" ng-src="{{game.player2.profile.picture}}">{{game.player2.profile.name}}</td>
+							<td><button ng-click="$ctrl.unirsePartida(game.id);" type="button" class="btn btn-success scale">Unirse</td>
 						</tr>
 					</tbody>
 				</table>
