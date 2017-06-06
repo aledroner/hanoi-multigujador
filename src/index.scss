@@ -175,6 +175,38 @@ button {
 		}
 	}
 }
+/* $Footer
+  -------------------------*/
+
+.footer {
+	padding: 1rem;
+	font-size: 1rem;
+	text-align: center;
+	color: $grey;
+
+	a {
+		color: $grey;
+
+		&:hover {
+			color: $dark_grey;
+			text-decoration: none;
+		}
+
+		.footer-text {
+			position: relative;
+			font-size: 1.1rem;
+			top: -2px;
+		}
+
+		.fa fa-github {
+			font-size: 1.2rem;
+		}
+
+		.bold {
+			font-weight: bold;
+		}
+	}
+}
 /* $Auxiliar
  -------------------------*/
 .bg_main_color {
@@ -195,6 +227,10 @@ button {
 
 .bg_tertiary_color {
 	background-color: $tertiary_color;
+}
+
+.bg_grey {
+	background-color: darken($ligth_grey, 10);
 }
 
 .bg_light_grey {
