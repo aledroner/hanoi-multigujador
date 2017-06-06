@@ -129,9 +129,9 @@ function randomId() {
 			id += rand(0, 9);
 		else {
 			if (rand(0, 1) % 2 == 0)
-				id += abc[rand(0, abc.length)].toUpperCase();
+				id += abc[rand(0, abc.length - 1)].toUpperCase();
 			else
-				id += abc[rand(0, abc.length)];
+				id += abc[rand(0, abc.length - 1)];
 		}
 	}
 	return id;

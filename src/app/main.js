@@ -59,17 +59,3 @@ angular
 
 		}
 	});
-// .controller('mainCtrl', ['$scope', function($scope) {
-// 	getRef('games-online').on('value', function(data) {
-// 		$scope.gamesOnline = data.val();
-// 	});
-// 	// getRef('games-online').on('child_added', function(data) {
-// 	// 	vm.gamesOnline.push(data.val());
-// 	// });
-// 	// getRef('games-online').on('child_changed', function(data) {
-// 	// 	vm.gamesOnline = data.val();
-// 	// });
-// 	// getRef('games-online').on('child_removed', function(data) {
-// 	// 	vm.gamesOnline = data.val();
-// 	// });
-// }]);
