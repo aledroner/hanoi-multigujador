@@ -58,20 +58,41 @@ angular
 
 			// Crea o se une a una partida nueva multijugador
 			vm.crearPartida = function(gameId, mode) {
-				if (mode != 'ver') {
-					var userId = getLocal('userId');
-					go(gameId);
-					setGame(userId, gameId, mode);
-					setLocal('gameActive', gameId);
-					updateField('users', userId, 'activeGame', gameId);
-					if (mode == 'crear') {
-						toastr.success('Partida creada. Espera a tu oponente');
-					} else {
-						toastr.success('Te has unido a la partida');
-					}
-				} else {
+				var userId = getLocal('userId');
+				if (mode == 'crear') {
+					refUsers.child(userId).once('value', function(snap) {
+						var user = snap.val();
+						if (user.activeGame) {
+							toastr.info('Ya tienes una partida creada. No puedes crear más de una.');
+						} else {
+							go(gameId);
+							updateField('users', userId, 'activeGame', true);
+							setGame(userId, gameId, mode);
+							toastr.success('Partida creada. Espera a tu oponente');
+						}
+					});
+				} else if (mode == 'unir') {
+					refGames.child(gameId).once('value', function(snap) {
+						var game = snap.val();
+						if (game.player1.uid == userId) {
+							go(gameId);
+						} else {
+							go(gameId);
+							updateField('users', userId, 'activeGame', true);
+							setGame(userId, gameId, mode);
+							toastr.success('Te has unido a la partida');
+						}
+					})
+				} else if (mode == 'ver') {
 					go(gameId);
 				}
+			}
+
+			// Crea o se une a una partida nueva multijugador
+			vm.borrarPartida = function(gameId) {
+				updateField('users', getLocal('userId'), 'activeGame', false);
+				deleteChild('games', gameId);
+				toastr.info('Has borrado la partida');
 			}
 
 			// Evento cuando hay un cambio en la autenticación
@@ -81,18 +102,15 @@ angular
 					refUsers.child(getLocal('userId')).on('value', function(snap) {
 						vm.userLogged = snap.val();
 					})
-					if ($stateParams.game == null) {
-						updateField('users', user.uid, 'activeGame', null);
-					}
 				} else {
 					$stateParams.log = false;
 					$stateParams.game = null;
 				}
 			});
 
+			// Setea quién es el jugador uno y el jugador dos
 			if ($stateParams.game != null) {
-				console.log('hola');
-				refGames.child($stateParams.game).on('value', function(snap) {
+				refGames.child($stateParams.game).once('value', function(snap) {
 					$timeout(function() {
 						var game = snap.val();
 						var userId = getLocal('userId');

@@ -34,7 +34,7 @@ function deleteChild(node, child) {
 function setGame(uid, gameId, mode) {
 	const refGames = getRef('games');
 	getChild('users', uid)
-		.on('value', function(snap) {
+		.once('value', function(snap) {
 			var user = snap.val();
 			if (mode == 'crear') {
 				var game = {
@@ -59,6 +59,7 @@ function setGame(uid, gameId, mode) {
 function createUser(social, result) {
 	if (social === 't') {
 		return {
+			activeGame: false,
 			profile: {
 				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.screen_name,
@@ -67,6 +68,7 @@ function createUser(social, result) {
 		};
 	} else if (social === 'g') {
 		return {
+			activeGame: false,
 			profile: {
 				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.given_name,

@@ -160,12 +160,20 @@ button {
 		margin-right: 1em;
 	}
 
+	.trash {
+		margin-left: .5em;
+	}
+
 	.game-full {
 		border-left: 4px solid lighten($error, 20);
 	}
 
 	.game-new {
 		border-left: 4px solid lighten($primary, 20);
+	}
+
+	.game-mine {
+		border-left: 4px solid lighten($success, 20);
 	}
 }
 /* $LogIn
