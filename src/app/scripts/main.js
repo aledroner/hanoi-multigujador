@@ -15,7 +15,6 @@ angular
 			// Variable que controla los stateParams
 			$timeout(function() {
 				vm.stateParams = $stateParams;
-
 			});
 
 			// Actualiza el array de partidas online
@@ -35,9 +34,10 @@ angular
 				firebase.auth().signInWithPopup(provider)
 					.then(function(result) {
 						var user = createUser(social, result);
-						createChild('users', result.user.uid, user);
-						setLocal('userId', result.user.uid);
-						toastr.success('¡Bienvenido ' + user.profile.name + '!');
+						var uid = result.user.uid;
+						refUsers.child(uid).set(user)
+						localStorage.setItem('userId', uid);
+						toastr.success('¡Saludos! ' + user.profile.name);
 					})
 					.catch(function(error) {
 						toastr.error(error.message);
@@ -49,38 +49,42 @@ angular
 				firebase.auth().signOut()
 					.then(function() {
 						go(null);
-						setLocal('userId', '');
-						toastr.info('¡Hasta pronto!');
+						localStorage.setItem('userId', '');
+						toastr.info('¡Hasta pronto figura!');
 					}).catch(function(err) {
-						toastr.success('Ha ocurrido un error')
+						toastr.success('Ha ocurrido un error escandaloso.')
 					});
 			}
 
 			// Crea o se une a una partida nueva multijugador
 			vm.crearPartida = function(gameId, mode) {
-				var userId = getLocal('userId');
+				var userId = localStorage.getItem('userId');
 				if (mode == 'crear') {
 					refUsers.child(userId).once('value', function(snap) {
 						var user = snap.val();
 						if (user.activeGame) {
-							toastr.info('Ya tienes una partida creada. No puedes crear más de una.');
+							toastr.info('Ya estás en una partida, no pretendas ser omnipresente.');
 						} else {
 							go(gameId);
-							updateField('users', userId, 'activeGame', true);
+							refUsers.child(userId).update({
+								activeGame: true
+							});
 							setGame(userId, gameId, mode);
-							toastr.success('Partida creada. Espera a tu oponente');
+							toastr.success('Partida creada. Ve a por un snack mientras esperas a tu oponente.');
 						}
 					});
 				} else if (mode == 'unir') {
 					refGames.child(gameId).once('value', function(snap) {
 						var game = snap.val();
-						if (game.player1.uid == userId) {
-							go(gameId);
-						} else {
-							go(gameId);
-							updateField('users', userId, 'activeGame', true);
+						// if (user.activeGame) {
+						// 	toastr.info('Ya estás en una partida, no pretendas ser omnipresente.');
+						go(gameId);
+						if (game.player1.uid != userId) {
+							refUsers.child(userId).update({
+								activeGame: true
+							});
 							setGame(userId, gameId, mode);
-							toastr.success('Te has unido a la partida');
+							toastr.success('¿¡Osas retar a ' + game.player1.name + '!?');
 						}
 					})
 				} else if (mode == 'ver') {
@@ -89,17 +93,26 @@ angular
 			}
 
 			// Crea o se une a una partida nueva multijugador
-			vm.borrarPartida = function(gameId) {
-				updateField('users', getLocal('userId'), 'activeGame', false);
-				deleteChild('games', gameId);
-				toastr.info('Has borrado la partida');
+			vm.borrarPartida = function(gameId, player1Id, player2Id) {
+				if (player1Id) {
+					refUsers.child(player1Id).update({
+						activeGame: false
+					});
+				}
+				if (player2Id) {
+					refUsers.child(player2Id).update({
+						activeGame: false
+					});
+				}
+				refGames.child(gameId).remove();
+				toastr.info('Partida directa al incinerador.');
 			}
 
 			// Evento cuando hay un cambio en la autenticación
 			firebase.auth().onAuthStateChanged(function(user) {
 				if (user) {
 					$stateParams.log = true;
-					refUsers.child(getLocal('userId')).on('value', function(snap) {
+					refUsers.child(localStorage.getItem('userId')).on('value', function(snap) {
 						vm.userLogged = snap.val();
 					})
 				} else {
@@ -110,10 +123,10 @@ angular
 
 			// Setea quién es el jugador uno y el jugador dos
 			if ($stateParams.game != null) {
-				refGames.child($stateParams.game).once('value', function(snap) {
+				refGames.child($stateParams.game).on('value', function(snap) {
 					$timeout(function() {
 						var game = snap.val();
-						var userId = getLocal('userId');
+						var userId = localStorage.getItem('userId')
 						if (game.player1.uid === userId) {
 							vm.player1 = snap.val().player1;
 							vm.player2 = snap.val().player2;

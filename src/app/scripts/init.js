@@ -1,11 +1,6 @@
 window.onload = function() {
-
-	/**
-	 * Evento cuando hay un cambio en la autenticación
-	 * de usuarios de la base de datos.
-	 * @param  {[type]} user [description]
-	 * @return {[type]}      [description]
-	 */
+	// Evento cuando hay un cambio en la autenticación
+	// de usuarios de la base de datos.
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
 			console.log(user);

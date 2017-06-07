@@ -80,7 +80,7 @@
 							<td>
 								<button ng-if="game.full==false" ng-click="$ctrl.crearPartida(game.id, 'unir')" type="button" class="btn btn-success scale"><span class="fa fa-arrow-right"></span>
 								<button ng-if="game.full==true" ng-click="$ctrl.crearPartida(game.id, 'ver')" type="button" class="btn btn-secondary scale"><span class="fa fa-eye"></span>
-								<button ng-if="$ctrl.userLogged.profile.uid == game.player1.uid" ng-click="$ctrl.borrarPartida(game.id)" type="button" class="btn btn-danger scale trash"><span class="fa fa-trash-o"></span>
+								<button ng-if="$ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid" ng-click="$ctrl.borrarPartida(game.id, game.player1.uid, game.player2.uid)" type="button" class="btn btn-danger scale trash"><span class="fa fa-trash-o"></span>
 							</td>
 						</tr>
 					</tbody>

@@ -34,14 +34,3 @@ function randomId() {
 function rand(min, max) {
 	return Math.floor(Math.random() * ((max + 1) - min)) + min;
 }
-
-// Devuelve una variable del local storage del navegador
-function getLocal(elem) {
-	return localStorage.getItem(elem);
-}
-
-// Setea una variable en el local storage del navegador
-function setLocal(elem, value) {
-	localStorage.setItem(elem, value);
-	return getLocal(elem);
-}
