@@ -188,26 +188,10 @@ button {
 		padding: 0.8em;
 		border: none;
 		outline: 0;
-		border-radius: 2px;
+		border-radius: 5px;
 
 		&:active {
 			top: 3px;
-		}
-
-		&.bg_twitter {
-			box-shadow: 0 3px 0 darken($twitter, 10);
-
-			&:active {
-				box-shadow: none;
-			}
-		}
-
-		&.bg_google {
-			box-shadow: 0 3px 0 darken($google, 20);
-
-			&:active {
-				box-shadow: none;
-			}
 		}
 	}
 }

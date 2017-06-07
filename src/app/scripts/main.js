@@ -7,30 +7,16 @@ angular
 			const refUsers = getRef('users');
 			const refGames = getRef('games');
 			vm.userLogged = {
-				picture: 'app/img/user.png'
+				profile: {
+					picture: 'app/img/user.png'
+				}
 			}
 
 			// Variable que controla los stateParams
 			$timeout(function() {
 				vm.stateParams = $stateParams;
+
 			});
-
-			if ($stateParams.log != null) {
-				refUsers.child(getLocal('userId')).on('value', function(snap) {
-					$timeout(function() {
-						vm.userLogged = snap.val();
-					});
-				})
-			}
-
-			if ($stateParams.game != null) {
-				refGames.child($stateParams.game).on('value', function(snap) {
-					$timeout(function() {
-						vm.player1 = snap.val().player1;
-						vm.player2 = snap.val().player2;
-					});
-				});
-			}
 
 			// Actualiza el array de partidas online
 			refGames.on('value', function(snap) {
@@ -40,29 +26,6 @@ angular
 					});
 				});
 			});
-
-			// Muestra la info de cada jugador en el modo game
-			function setPlayers(gameId) {
-				$timeout(function() {
-					refGames.child(gameId).once('value', function(snap) {
-						var game = snap.val();
-						var userId = getLocal('userId');
-						if (game.player1.uid === userId) {
-							console.log('player 1 -> ', userId);
-							toggle('player1-controlls', 'block')
-							toggle('player2-controlls', 'none')
-						} else if (game.player2.uid === userId) {
-							console.log('player 2 -> ', userId);
-							toggle('player1-controlls', 'none')
-							toggle('player2-controlls', 'block')
-						} else {
-							console.log('guess -> ', userId);
-							toggle('player1-controlls', 'none')
-							toggle('player2-controlls', 'none')
-						}
-					});
-				});
-			};
 
 			// Inicia sesión
 			vm.signIn = function(social) {
@@ -99,7 +62,6 @@ angular
 					var userId = getLocal('userId');
 					go(gameId);
 					setGame(userId, gameId, mode);
-					setPlayers(gameId);
 					setLocal('gameActive', gameId);
 					updateField('users', userId, 'activeGame', gameId);
 					if (mode == 'crear') {
@@ -116,6 +78,9 @@ angular
 			firebase.auth().onAuthStateChanged(function(user) {
 				if (user) {
 					$stateParams.log = true;
+					refUsers.child(getLocal('userId')).on('value', function(snap) {
+						vm.userLogged = snap.val();
+					})
 					if ($stateParams.game == null) {
 						updateField('users', user.uid, 'activeGame', null);
 					}
@@ -124,6 +89,23 @@ angular
 					$stateParams.game = null;
 				}
 			});
+
+			if ($stateParams.game != null) {
+				console.log('hola');
+				refGames.child($stateParams.game).on('value', function(snap) {
+					$timeout(function() {
+						var game = snap.val();
+						var userId = getLocal('userId');
+						if (game.player1.uid === userId) {
+							vm.player1 = snap.val().player1;
+							vm.player2 = snap.val().player2;
+						} else {
+							vm.player1 = snap.val().player2;
+							vm.player2 = snap.val().player1;
+						}
+					});
+				});
+			}
 
 			// Te lleva a una partida
 			function go(gameId) {
