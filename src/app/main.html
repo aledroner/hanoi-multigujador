@@ -72,7 +72,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-class="game.full ? 'game-full':''" ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date'">
+						<tr ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date'">
 							<th><span class="hour">{{game.date | date : 'HH:mm:ss'}}</span></th>
 							<th>{{game.id}}</th>
 							<td><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}}</td>
