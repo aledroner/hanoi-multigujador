@@ -13,9 +13,7 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
 			component: 'app',
 			params: {
 				game: null,
-				log: false,
-				player1: null,
-				player2: null,
+				log: false
 			}
 		});
 }

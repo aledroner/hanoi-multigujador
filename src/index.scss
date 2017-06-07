@@ -30,7 +30,6 @@ button {
 }
 /* $Header
  -------------------------*/
-
 .header {
 	font-size: 1em;
 
@@ -73,9 +72,10 @@ button {
 				line-height: 1.1;
 				font-size: 2em;
 				box-sizing: inherit;
-				display:block;
+				display: block;
 				color: inherit;
 				padding: 0 !important;
+
 				&:hover {
 					color: $darker_grey !important;
 				}
@@ -85,7 +85,6 @@ button {
 }
 /* $Main
  -------------------------*/
-
 .main-container {
 	display: flex;
 	flex-direction: column;
@@ -100,6 +99,7 @@ button {
 }
 /* $Game
  -------------------------*/
+
 #game {
 	margin-bottom: 4em;
 
@@ -134,18 +134,21 @@ button {
 		}
 	}
 }
+
 .player-picture {
 	border-radius: 50%;
 	border: 2px solid $ligth_grey;
 }
 /* $Game-online
  -------------------------*/
-#games-online {
+
+#games {
 	margin-bottom: 4em;
 
-	.games-online-title {
+	.games-title {
 		margin-bottom: 0.8em;
 	}
+
 	.hour {
 		font-weight: normal;
 		font-style: italic;
@@ -156,10 +159,17 @@ button {
 		height: 30px;
 		margin-right: 1em;
 	}
+
+	.game-full {
+		border-left: 4px solid lighten($error, 20);
+	}
+
+	.game-new {
+		border-left: 4px solid lighten($primary, 20);
+	}
 }
 /* $LogIn
  -------------------------*/
-
 .logIn {
 	padding: 3em;
 	width: 400px;
@@ -203,6 +213,7 @@ button {
 }
 /* $Footer
   -------------------------*/
+
 .footer {
 	padding: 1rem;
 	font-size: 1rem;
@@ -234,7 +245,6 @@ button {
 }
 /* $Auxiliar
  -------------------------*/
-
 .bg_main_color {
 	background-color: $main_color;
 }

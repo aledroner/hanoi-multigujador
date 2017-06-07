@@ -8,7 +8,7 @@
 				<a class="header-title" ui-sref="app({game:undefined})">Hanoi</a>
 				<div class="log-buttons d-flex ml-auto" ng-if="$ctrl.stateParams.log==true">
 					<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión </a>
-					<img id="log-player1-picture" class="turn player-picture" src="app/img/user.png">
+					<img id="log-player1-picture" class="turn player-picture" ng-src="{{$ctrl.userLogged.profile.picture}}">
 				</div>
 			</nav>
 		</div>
@@ -30,8 +30,8 @@
 
 				<div id="player1" class="player">
 					<div class="title-player d-flex justify-content-center align-items-center">
-						<img id="player1-picture" class="turn player-picture" src="app/img/user.png">
-						<h3 id="player1-name">Jugador 1</h3>
+						<img id="player1-picture" class="turn player-picture" src="{{$ctrl.player1.picture}}">
+						<h3 id="player1-name">{{$ctrl.player1.name}}</h3>
 					</div>
 					<div id="canvasP1" class="canvas">
 
@@ -45,8 +45,8 @@
 
 				<div id="player2" class="player">
 					<div class="title-player d-flex justify-content-center align-items-center">
-						<img id="player2-picture" class="turn player-picture" src="app/img/user.png">
-						<h3 id="player2-name">Jugador 2</h3>
+						<img id="player2-picture" class="turn player-picture" src="{{$ctrl.player2.picture}}">
+						<h3 id="player2-name">{{$ctrl.player2.name}}</h3>
 					</div>
 					<div id="canvasP1" class="canvas">
 
@@ -60,12 +60,12 @@
 			</div>
 		</div>
 
-		<div id="games-online" ng-if="$ctrl.stateParams.log==true && $ctrl.stateParams.game==null">
-			<div class="games-online-title d-flex justify-content-between">
+		<div id="games" ng-if="$ctrl.stateParams.log==true && $ctrl.stateParams.game==null">
+			<div class="games-title d-flex justify-content-between">
 				<h4>Partidas online</h4>
-				<button ng-click="$ctrl.crearPartida()" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
+				<button ng-click="$ctrl.crearPartida($ctrl.generarIdGame(), 'crear')" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
 			</div>
-			<div class="games-online">
+			<div class="games">
 				<table class="table">
 					<thead class="thead-default">
 						<tr>
@@ -77,12 +77,15 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date'">
+						<tr ng-class="game.full ? 'game-full':''" ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date'">
 							<th><span class="hour">{{game.date | date : 'HH:mm:ss'}}</span></th>
-							<th scope="row">{{game.id}}</th>
-							<td><img class="turn player-picture" ng-src="{{game.player1.profile.picture}}">{{game.player1.profile.name}}</td>
-							<td><img class="turn player-picture" ng-src="{{game.player2.profile.picture}}">{{game.player2.profile.name}}</td>
-							<td><button ng-click="$ctrl.unirsePartida(game.id);" type="button" class="btn btn-success scale">Unirse</td>
+							<th>{{game.id}}</th>
+							<td><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}}</td>
+							<td><img class="turn player-picture" ng-src="{{game.player2.picture}}">{{game.player2.name}}</td>
+							<td>
+								<button ng-if="game.full==false" ng-click="$ctrl.crearPartida(game.id, 'unir')" type="button" class="btn btn-success scale"><span class="fa fa-arrow-right"></span>
+								<button ng-if="game.full==true" ng-click="$ctrl.crearPartida(game.id, 'ver')" type="button" class="btn btn-secondary scale"><span class="fa fa-eye"></span>
+							</td>
 						</tr>
 					</tbody>
 				</table>

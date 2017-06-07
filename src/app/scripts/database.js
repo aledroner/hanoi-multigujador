@@ -1,78 +1,64 @@
-/**
- * Devuelve la referencia de un objeto padre de la base de datos
- * @param  {[type]} node [description]
- * @return {[type]}      [description]
- */
+// Devuelve la referencia de un objeto padre de la base de datos
 function getRef(node) {
 	return firebase.database().ref(node);
 }
 
-/**
- * Devuelve la referencia de un objeto hijo de la base de datos
- * @param  {[type]} node  [description]
- * @param  {[type]} child [description]
- * @return {[type]}       [description]
- */
+// Devuelve la referencia de un objeto hijo de la base de datos
 function getChild(node, child) {
 	return getRef(node).child(child);
 }
 
-/**
- * Escribe en la base de datos un usuario pasado por parámetro
- * @param  {[type]} uid  [description]
- * @param  {[type]} user [description]
- * @return {[type]}      [description]
- */
-function setUser(uid, user) {
-	firebase.database().ref('users/' + uid).set(user);
+// Crea un objeto hijo en la referencia
+function createChild(node, child, obj) {
+	getChild(node, child).set(obj);
 }
 
-/**
- * Crea una nueva partida
- * @param  {[type]} uid [description]
- * @return {[type]}     [description]
- */
-function setGame(uid, gameId) {
-	getRef('users/' + uid)
+// Actualiza un hijo
+function updateChild(node, child, obj) {
+	getChild(node, child).update(obj);
+}
+
+// Actualiza o crea un campo de un hijo
+function updateField(node, child, field, value) {
+	var obj = {};
+	obj[field] = value;
+	updateChild(node, child, obj);
+}
+
+// Remueve un hijo
+function deleteChild(node, child) {
+	getChild(node, child).remove();
+}
+
+// Crea una nueva partida
+function setGame(uid, gameId, mode) {
+	const refGames = getRef('games');
+	getChild('users', uid)
 		.on('value', function(snap) {
 			var user = snap.val();
-			var game = {
-				date: new Date().getTime(),
-				id: gameId,
-				player1: user,
-				player2: {
-					profile: {
+			if (mode == 'crear') {
+				var game = {
+					full: false,
+					date: new Date().getTime(),
+					id: gameId,
+					player1: user.profile,
+					player2: {
 						name: 'Esperando...',
 						picture: '/app/img/user.png'
 					}
 				}
+				refGames.child(gameId).set(game);
+			} else {
+				updateField('games', gameId, 'full', true);
+				updateChild('games/' + gameId, 'player2', user.profile);
 			}
-			firebase.database().ref('games-online/' + gameId).set(game);
 		});
 }
 
-/**
- * Jugador 2 se une a una partida creada
- * @param  {[type]} uid    [description]
- * @param  {[type]} gameId [description]
- * @return {[type]}        [description]
- */
-function joinGame(uid, gameId) {
-	getRef('users/' + uid)
-		.on('value', function(snap) {
-			var user = snap.val();
-			firebase.database().ref('games-online/' + gameId + '/player2').set(user);
-		});
-}
-
-/**
- * Crea un objeto usuario dependiendo de la red social
- * @param {[type]} social [description]
- * @param {[type]} result [description]
- */
+// Crea un objeto usuario dependiendo de la red social
 function createUser(social, result) {
 	if (social === 't') {
-		return user = {
+		return {
 			profile: {
 				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.screen_name,
@@ -80,7 +66,7 @@ function createUser(social, result) {
 			}
 		};
 	} else if (social === 'g') {
-		return user = {
+		return {
 			profile: {
 				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.given_name,
