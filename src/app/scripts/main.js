@@ -8,7 +8,6 @@ angular
 			// Variable que controla los stateParams
 			$timeout(function() {
 				vm.stateParams = $stateParams;
-				setPlayers(vm.stateParams.player1, vm.stateParams.player2);
 			});
 
 			/**
@@ -52,7 +51,7 @@ angular
 					var gameId = randomId();
 					setGame(vm.currentUserId, gameId);
 					go(gameId);
-					setPlayers(vm.currentUserId, null);
+					setPlayers(gameId);
 					toastr.success('Partida creada. Espera a tu oponente');
 				} else {
 					toastr.error('Ha ocurrido un error');
@@ -68,11 +67,7 @@ angular
 				if (vm.currentUserId != null) {
 					joinGame(vm.currentUserId, gameId);
 					go(gameId);
-					getRef('games-online/' + gameId + '/player2')
-						.on('value', function(snap) {
-							var player2 = snap.val();
-							setPlayers(vm.currentUserId, player2.profile.uid);
-						});
+					setPlayers(gameId);
 					toastr.success('Te has unido a la partida');
 				} else {
 					toastr.error('Ha ocurrido un error');
@@ -95,12 +90,13 @@ angular
 			// Evento cuando hay un cambio en la autenticación
 			firebase.auth().onAuthStateChanged(function(user) {
 				if (user) {
-					$stateParams.log = true
+					$stateParams.log = true;
+					setUserLogged(user.uid);
 				} else {
-					$stateParams.log = false
-					$stateParams.game = null
-					$stateParams.player1 = null
-					$stateParams.player2 = null
+					$stateParams.log = false;
+					$stateParams.game = null;
+					$stateParams.player1 = null;
+					$stateParams.player2 = null;
 				}
 			});
 
@@ -116,19 +112,42 @@ angular
 			}
 
 			/**
-			 * Setea los parámetros de jugadores en el juego
-			 * @param {[type]} player1Id [description]
-			 * @param {[type]} player2Id [description]
+			 * Muestra la foto de perfil del usuario logueado en el header
+			 * @param {[type]} uid [description]
 			 */
-			function setPlayers(player1Id, player2Id) {
-				$stateParams.player1 = player1Id;
-				$stateParams.player2 = player2Id;
-				if (player1Id) {
-					refresh('player1', player1Id);
-				}
-				if (player2Id) {
-					refresh('player2', player2Id);
-				}
-			}
+			function setUserLogged(uid) {
+				$timeout(function() {
+					getRef('users/' + uid).on('value', function(snap) {
+						vm.userLogged = snap.val();
+						getId('log-player1-picture').src = vm.userLogged.profile.picture;
+					});
+				});
+			};
+
+			/**
+			 * Muestra la info de cada jugador en el modo game
+			 * @param {[type]} gameId [description]
+			 */
+			function setPlayers(gameId) {
+				$timeout(function() {
+					getRef('games-online/' + gameId).on('value', function(snap) {
+						var game = snap.val();
+						inner('player1-name', game.player1.profile.name);
+						getId('player1-picture').src = game.player1.profile.picture;
+						inner('player2-name', game.player2.profile.name);
+						getId('player2-picture').src = game.player2.profile.picture;
+
+						if (game.player1.profile.uid === vm.userLogged.profile.uid) {
+							console.log('player 1 -> ', game.player1.profile.uid);
+							toggle('player1-controlls', 'block')
+							toggle('player2-controlls', 'none')
+						} else {
+							console.log('player 2 -> ', game.player2.profile.uid);
+							toggle('player1-controlls', 'none')
+							toggle('player2-controlls', 'block')
+						}
+					});
+				});
+			};
 		}
 	});

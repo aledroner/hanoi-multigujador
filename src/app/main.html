@@ -7,7 +7,8 @@
 				</a>
 				<a class="header-title" ui-sref="app({game:undefined})">Hanoi</a>
 				<div class="log-buttons d-flex ml-auto" ng-if="$ctrl.stateParams.log==true">
-					<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión &nbsp;<span class="fa fa-sign-out"></span></a>
+					<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión </a>
+					<img id="log-player1-picture" class="turn player-picture" src="app/img/user.png">
 				</div>
 			</nav>
 		</div>
@@ -24,7 +25,7 @@
 			</div>
 		</div>
 
-		<div id="game" ng-if="$ctrl.stateParams.log==true && $ctrl.stateParams.game!=undefined">
+		<div id="game" ng-show="$ctrl.stateParams.log==true && $ctrl.stateParams.game!=null">
 			<div class="game d-flex flex-row">
 
 				<div id="player1" class="player">
@@ -35,7 +36,7 @@
 					<div id="canvasP1" class="canvas">
 
 					</div>
-					<nav class="controls text-center">
+					<nav id="player1-controlls" class="controls text-center">
 						<button id="accion1" class="btn scale">Coger
 						<button id="accion2" class="btn scale">Coger
 						<button id="accion3" class="btn scale">Coger
@@ -50,6 +51,11 @@
 					<div id="canvasP1" class="canvas">
 
 					</div>
+					<nav id="player2-controlls" class="controls text-center">
+						<button id="accion1" class="btn scale">Coger
+						<button id="accion2" class="btn scale">Coger
+						<button id="accion3" class="btn scale">Coger
+					</nav>
 				</div>
 			</div>
 		</div>

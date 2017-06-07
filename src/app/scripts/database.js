@@ -76,7 +76,7 @@ function createUser(social, result) {
 			profile: {
 				uid: result.user.uid,
 				name: result.additionalUserInfo.profile.screen_name,
-				picture: result.additionalUserInfo.profile.profile_image_url
+				picture: result.additionalUserInfo.profile.profile_image_url_https
 			}
 		};
 	} else if (social === 'g') {
