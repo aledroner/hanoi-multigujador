@@ -1,6 +1,7 @@
 angular
 	.module('app', [
 		'ui.router',
+		'ui.bootstrap',
 		'firebase',
 		'toastr',
 		'hanoi.main'

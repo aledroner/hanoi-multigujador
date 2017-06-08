@@ -2,7 +2,7 @@ angular
 	.module('hanoi.main', [])
 	.component('app', {
 		templateUrl: 'app/main.html',
-		controller: function($stateParams, $state, $timeout, toastr) {
+		controller: function($stateParams, $state, $timeout, $uibModal, toastr) {
 
 			// Constantes
 			const VM = this;
@@ -18,19 +18,17 @@ angular
 			const MSG_GAME_JOINED = 'Has retado al malvado ';
 			const MSG_GAME_DELETED = 'Partida directa al incinerador.';
 
-			// Usuario logueado
-			VM.userLogged = {
-				profile: {
-					picture: 'app/img/user.png'
-				}
-			}
-
 			/**
-			 * Timeout para establece los stateParams
+			 * Cuando se crea el controlador
 			 */
-			$timeout(function() {
+			VM.$onInit = function() {
 				VM.stateParams = $stateParams;
-			});
+				VM.userLogged = {
+					profile: {
+						picture: 'app/img/user.png'
+					}
+				}
+			};
 
 			// Evento que actualiza el array de partidas online
 			REF_GAMES.on('value', function(snap) {
@@ -197,5 +195,47 @@ angular
 			VM.generarIdGame = function() {
 				return randomId();
 			}
+
+			/**
+			 * Ventana modal
+			 */
+			VM.modal = function(gameId, player1Id, player2Id) {
+				var modalInstance = $uibModal.open({
+					animation: false,
+					component: 'modalComponent',
+					resolve: {
+						game: function() {
+							return gameId;
+						}
+					}
+				});
+
+				modalInstance.result.then(function(gameId, player1Id, player2Id) {
+					VM.borrarPartida(gameId, player1Id, player2Id);
+				}, function() {
+					console.log('modal-component dismissed at: ' + new Date());
+				});
+			};
+		}
+	})
+	.component('modalComponent', {
+		templateUrl: 'app/modal.html',
+		bindings: {
+			resolve: '<',
+			close: '&',
+			dismiss: '&'
+		},
+		controller: function() {
+			const VM = this;
+			VM.borrar = function(game) {
+				VM.close({
+					$value: game
+				});
+			};
+			VM.cancel = function() {
+				VM.dismiss({
+					$value: 'cancel'
+				});
+			};
 		}
 	});
