@@ -53,7 +53,7 @@ angular
 					.then(function(result) {
 						var user = createUser(social, result);
 						var uid = result.user.uid;
-						REF_USERS.child(uid).set(user)
+						REF_USERS.child(uid).update(user)
 						localStorage.setItem('userId', uid);
 						toastr.success(MSG_SIGNIN + user.profile.name);
 					})
@@ -100,17 +100,24 @@ angular
 				} else if (mode == 'unir') {
 					REF_GAMES.child(gameId).once('value', function(snap) {
 						var game = snap.val();
-						// if (user.activeGame) {
-						// 	toastr.info('Ya estás en una partida, no pretendas ser omnipresente.');
-						go(gameId);
-						if (game.player1.uid != userId) {
-							REF_USERS.child(userId).update({
-								activeGame: true
-							});
-							setGame(userId, gameId, mode);
-							toastr.success(MSG_GAME_JOINED + game.player1.name);
-						}
-					})
+						REF_USERS.child(userId).once('value', function(snap) {
+							var user = snap.val();
+							if (game.player1.uid == userId || game.player2.uid == userId) {
+								go(gameId);
+							} else {
+								if (user.activeGame) {
+									toastr.info(MSG_GAME_ACTIVED);
+								} else {
+									go(gameId);
+									REF_USERS.child(userId).update({
+										activeGame: true
+									});
+									setGame(userId, gameId, mode);
+									toastr.success(MSG_GAME_JOINED + game.player1.name);
+								}
+							}
+						});
+					});
 				} else if (mode == 'ver') {
 					go(gameId);
 				}

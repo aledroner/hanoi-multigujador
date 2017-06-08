@@ -10,7 +10,7 @@ function getChild(node, child) {
 
 // Crea una nueva partida
 function setGame(uid, gameId, mode) {
-	const refGames = getRef('games');
+	const REF_GAMES = getRef('games');
 	getRef('users').child(uid).once('value', function(snap) {
 		var user = snap.val();
 		if (mode == 'crear') {
@@ -24,9 +24,9 @@ function setGame(uid, gameId, mode) {
 					picture: '/app/img/user.png'
 				}
 			}
-			refGames.child(gameId).set(game);
+			REF_GAMES.child(gameId).set(game);
 		} else {
-			refGames.child(gameId).update({
+			REF_GAMES.child(gameId).update({
 				full: true,
 				player2: user.profile
 			});
