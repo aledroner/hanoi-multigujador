@@ -18,6 +18,7 @@ function setGame(uid, gameId, mode) {
 				full: false,
 				date: new Date().getTime(),
 				id: gameId,
+				level: 0,
 				player1: user.profile,
 				player2: {
 					name: 'Esperando...',

@@ -51,11 +51,15 @@ angular
 				if (social === 'g') provider = new firebase.auth.GoogleAuthProvider();
 				firebase.auth().signInWithPopup(provider)
 					.then(function(result) {
-						var user = createUser(social, result);
 						var uid = result.user.uid;
-						REF_USERS.child(uid).update(user)
 						localStorage.setItem('userId', uid);
-						toastr.success(MSG_SIGNIN + user.profile.name);
+						REF_USERS.once('value').then(function(snap) {
+							var user = createUser(social, result);
+							if (!snap.hasChild(uid)) {
+								REF_USERS.child(uid).set(user);
+							}
+							toastr.success(MSG_SIGNIN + user.profile.name);
+						});
 					})
 					.catch(function(error) {
 						toastr.error(error.message);
@@ -160,17 +164,19 @@ angular
 			// Setea quién es el jugador 1 y el jugador 2
 			if ($stateParams.game != null) {
 				REF_GAMES.child($stateParams.game).on('value', function(snap) {
-					$timeout(function() {
-						var game = snap.val();
-						var userId = localStorage.getItem('userId')
-						if (game.player1.uid === userId) {
-							VM.player1 = snap.val().player1;
-							VM.player2 = snap.val().player2;
-						} else {
-							VM.player1 = snap.val().player2;
-							VM.player2 = snap.val().player1;
-						}
-					});
+					if ($stateParams.game != null) {
+						$timeout(function() {
+							var game = snap.val();
+							var userId = localStorage.getItem('userId')
+							if (game.player1.uid === userId) {
+								VM.player1 = snap.val().player1;
+								VM.player2 = snap.val().player2;
+							} else {
+								VM.player1 = snap.val().player2;
+								VM.player2 = snap.val().player1;
+							}
+						});
+					}
 				});
 			}
 
