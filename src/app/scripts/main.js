@@ -15,7 +15,7 @@ angular
 			const MSG_ERROR = 'Ha ocurrido un error escandaloso.';
 			const MSG_GAME_ACTIVED = 'Ya estás en una partida, no pretendas ser omnipresente.';
 			const MSG_GAME_CREATED = 'Partida creada. Ve a por un snack mientras esperas a tu oponente.';
-			const MSG_GAME_JOINED = '¿¡Osas retar a ';
+			const MSG_GAME_JOINED = 'Has retado al malvado ';
 			const MSG_GAME_DELETED = 'Partida directa al incinerador.';
 
 			// Usuario logueado
@@ -108,7 +108,7 @@ angular
 								activeGame: true
 							});
 							setGame(userId, gameId, mode);
-							toastr.success(MSG_GAME_JOINED + game.player1.name + '!?');
+							toastr.success(MSG_GAME_JOINED + game.player1.name);
 						}
 					})
 				} else if (mode == 'ver') {
