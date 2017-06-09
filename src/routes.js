@@ -28,7 +28,7 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
 			}
 		})
 		.state('app.game', {
-			url: 'game/:gameId',
+			url: ':gameId',
 			template: '<hanoi-game></hanoi-game>',
 			controller: function($log, $stateParams) {
 				$log.log('');

@@ -2,10 +2,10 @@ angular
 	.module('hanoi.header', [])
 	.component('hanoiHeader', {
 		templateUrl: 'app/header.html',
-		controller: function(hanoi, toastr, $state, $timeout) {
+		controller: function(hanoi, toastr, $state) {
+
 			// Constantes
 			const VM = this;
-			const MSG_ERROR = 'Ha ocurrido un error escandaloso.';
 
 			// Variables
 			VM.uid = 'noLogged';
