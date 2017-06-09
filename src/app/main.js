@@ -107,7 +107,7 @@ angular
 			 * @param  {String} gameId Id aleatoria del juego
 			 * @param  {String} mode   Modo de entrar ['Crear' | 'Unir' | 'Ver']
 			 */
-			createGame: function(gameId, mode) {
+			createGame: function(gameId, level) {
 				REF_USERS.child(currentUser).once('value', function(snap) {
 					var user = snap.val();
 					if (user.activeGame) {
@@ -119,7 +119,7 @@ angular
 						REF_USERS.child(currentUser).update({
 							activeGame: true
 						});
-						setGame(currentUser, gameId, mode);
+						setGame(currentUser, gameId, level);
 						toastr.success(GAME_CREATED);
 					}
 				});

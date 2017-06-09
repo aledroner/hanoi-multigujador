@@ -1,5 +1,5 @@
 angular
-	.module('hanoi.home', [])
+	.module('hanoi.home', ['modal.levelGame', 'modal.deleteGame'])
 	.component('hanoiHome', {
 		templateUrl: 'app/home.html',
 		controller: function(hanoi, toastr, $state, $stateParams, $timeout, $uibModal) {
@@ -73,12 +73,25 @@ angular
 			}
 
 			/**
-			 * Genera un id aleatorio para un juego nuevo
-			 * @return {String} Cadena alfanumérica aleatorioa
+			 * Muestra una ventana modal para elegir el nivel de la partida
 			 */
-			VM.generarIdGame = function() {
-				return randomId();
-			}
+			VM.modalLevelGame = function() {
+				var modalInstance = $uibModal.open({
+					animation: false,
+					component: 'modalLevelGame',
+					resolve: {
+						level: function() {
+							return 1;
+						}
+					}
+				});
+
+				modalInstance.result.then(function(level) {
+					hanoi.createGame(randomId(), level);
+				}, function() {
+					console.log('modal-component dismissed at: ' + new Date());
+				});
+			};
 
 			/**
 			 * Muestra una ventana modal para borrar una partida
@@ -86,10 +99,10 @@ angular
 			 * @param  {String} player1Id Id aleatoria del jugador 1
 			 * @param  {String} player2Id Id aleatoria del jugador 2
 			 */
-			VM.modal = function(gameId, player1Id, player2Id) {
+			VM.modalDeleteGame = function(gameId, player1Id, player2Id) {
 				var modalInstance = $uibModal.open({
 					animation: false,
-					component: 'modalComponent',
+					component: 'modalDeleteGame',
 					resolve: {
 						gameId: function() {
 							return gameId;
@@ -110,30 +123,5 @@ angular
 				});
 			};
 
-		}
-	})
-	.component('modalComponent', {
-		templateUrl: 'app/modal.html',
-		bindings: {
-			resolve: '<',
-			close: '&',
-			dismiss: '&'
-		},
-		controller: function() {
-			const VM = this;
-			VM.borrar = function() {
-				VM.close({
-					$value: {
-						gameId: VM.resolve.gameId,
-						player1Id: VM.resolve.player1Id,
-						player2Id: VM.resolve.player2Id
-					}
-				});
-			};
-			VM.cancel = function() {
-				VM.dismiss({
-					$value: 'cancel'
-				});
-			};
 		}
 	});

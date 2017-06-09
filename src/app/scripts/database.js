@@ -9,16 +9,16 @@ function getChild(node, child) {
 }
 
 // Crea una nueva partida
-function setGame(uid, gameId, mode) {
+function setGame(uid, gameId, level) {
 	const REF_GAMES = getRef('games');
 	getRef('users').child(uid).once('value', function(snap) {
 		var user = snap.val();
-		if (mode == 'crear') {
+		if (level != null) {
 			var game = {
 				full: false,
 				date: new Date().getTime(),
 				id: gameId,
-				level: 0,
+				level: level,
 				player1: user.profile,
 				player2: {
 					name: 'Esperando...',

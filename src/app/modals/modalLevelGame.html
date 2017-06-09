@@ -1,0 +1,23 @@
+<div class="modal-header">
+	<h3 class="modal-title" id="modal-title"><span class="fa fa-flask"></span> Crear partida</h3>
+</div>
+<div class="modal-body" id="modal-body">
+	<p>Eliga un nivel de dificultad para empezar la partida:</p>
+
+	<div class="d-flex align-items-center">
+		<div class="dropdown">
+			<button class="btn btn-primary dropdown-toggle" type="button" id="about-us" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Número de discos <span class="caret"></span>
+            <span class="sr-only">Split button!</span></button>
+			<div class="dropdown-menu" aria-labelledby="about-us">
+				<a ng-repeat="level in $ctrl.levels" class="dropdown-item" href="#" ng-selected="$ctrl.selected" ng-click="$ctrl.selected=level">{{level}}</a>
+			</div>
+		</div>
+		<div class="level-selected">
+			{{$ctrl.selected}}
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn" type="button" ng-click="$ctrl.cancel()">Cancelar</button>
+	<button class="btn btn-success" type="button" ng-click="$ctrl.crear()">Crear partida</button>
+</div>
