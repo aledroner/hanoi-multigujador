@@ -1,5 +1,8 @@
 angular
 	.module('app')
+	.component('app', {
+		templateUrl: 'app/main.html'
+	})
 	.factory('hanoi', function(toastr, $state, $stateParams) {
 
 		// Constantes
@@ -153,37 +156,6 @@ angular
 					});
 				});
 			},
-
-		}
-	})
-	.component('app', {
-		templateUrl: 'app/main.html',
-		controller: function($stateParams, $state, $timeout, toastr) {
-
-			// Constantes
-			const VM = this;
-			const REF_USERS = getRef('users');
-			const REF_GAMES = getRef('games');
-
-
-			// Setea quién es el jugador 1 y el jugador 2
-			if ($stateParams.game != null) {
-				REF_GAMES.child($stateParams.game).on('value', function(snap) {
-					if ($stateParams.game != null) {
-						$timeout(function() {
-							var game = snap.val();
-							var userId = localStorage.getItem('userId')
-							if (game.player1.uid === userId) {
-								VM.player1 = snap.val().player1;
-								VM.player2 = snap.val().player2;
-							} else {
-								VM.player1 = snap.val().player2;
-								VM.player2 = snap.val().player1;
-							}
-						});
-					}
-				});
-			}
 
 		}
 	});

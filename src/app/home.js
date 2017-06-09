@@ -58,9 +58,6 @@ angular
 			 * @param  {String} player2Id Id aleatoria del jugador 2
 			 */
 			VM.borrarPartida = function(gameId, player1Id, player2Id) {
-				console.log(gameId);
-				console.log(player1Id);
-				console.log(player2Id);
 				if (player1Id) {
 					REF_USERS.child(player1Id).update({
 						activeGame: false
