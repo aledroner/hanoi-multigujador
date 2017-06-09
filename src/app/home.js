@@ -9,6 +9,13 @@ angular
 			const REF_USERS = hanoi.ref.users;
 			const REF_GAMES = hanoi.ref.games;
 
+			// Usuario logueado
+			VM.userLogged = {
+				profile: {
+					picture: 'app/img/user.png'
+				}
+			}
+
 			// Evento que actualiza el array de partidas online
 			hanoi.ref.games.on('value', function(snap) {
 				$timeout(function() {
@@ -16,6 +23,15 @@ angular
 						return [value];
 					});
 				});
+			});
+
+			// Evento cuando hay un cambio en la autenticación
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					REF_USERS.child(user.uid).on('value', function(snap) {
+						VM.userLogged = snap.val();
+					});
+				}
 			});
 
 			/**
