@@ -158,7 +158,7 @@ angular
 	})
 	.component('app', {
 		templateUrl: 'app/main.html',
-		controller: function($stateParams, $state, $timeout, $uibModal, toastr) {
+		controller: function($stateParams, $state, $timeout, toastr) {
 
 			// Constantes
 			const VM = this;
@@ -184,46 +184,6 @@ angular
 					}
 				});
 			}
-			/**
-			 * Ventana modal
-			 */
-			VM.modal = function(gameId, player1Id, player2Id) {
-				var modalInstance = $uibModal.open({
-					animation: false,
-					component: 'modalComponent',
-					resolve: {
-						game: function() {
-							return gameId;
-						}
-					}
-				});
 
-				modalInstance.result.then(function(gameId, player1Id, player2Id) {
-					VM.borrarPartida(gameId, player1Id, player2Id);
-				}, function() {
-					console.log('modal-component dismissed at: ' + new Date());
-				});
-			};
-		}
-	})
-	.component('modalComponent', {
-		templateUrl: 'app/modal.html',
-		bindings: {
-			resolve: '<',
-			close: '&',
-			dismiss: '&'
-		},
-		controller: function() {
-			const VM = this;
-			VM.borrar = function(game) {
-				VM.close({
-					$value: game
-				});
-			};
-			VM.cancel = function() {
-				VM.dismiss({
-					$value: 'cancel'
-				});
-			};
 		}
 	});

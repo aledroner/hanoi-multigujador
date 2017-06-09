@@ -30,6 +30,7 @@ button {
 }
 /* $Header
  -------------------------*/
+
 .header {
 	font-size: 1em;
 
@@ -85,6 +86,7 @@ button {
 }
 /* $Main
  -------------------------*/
+
 .main-container {
 	display: flex;
 	flex-direction: column;
@@ -99,7 +101,6 @@ button {
 }
 /* $Game
  -------------------------*/
-
 #game {
 	margin-bottom: 4em;
 
@@ -141,7 +142,6 @@ button {
 }
 /* $Game-online
  -------------------------*/
-
 #games {
 	margin-bottom: 4em;
 
@@ -165,7 +165,7 @@ button {
 	}
 
 	.trash {
-		margin-left: .5em;
+		margin-left: 0.5em;
 	}
 
 	.game-full {
@@ -182,6 +182,7 @@ button {
 }
 /* $LogIn
  -------------------------*/
+
 .logIn {
 	padding: 3em;
 	width: 400px;
@@ -209,7 +210,6 @@ button {
 }
 /* $Footer
   -------------------------*/
-
 .footer {
 	padding: 1rem;
 	font-size: 1rem;
@@ -241,6 +241,7 @@ button {
 }
 /* $Auxiliar
  -------------------------*/
+
 .bg_main_color {
 	background-color: $main_color;
 }
@@ -317,4 +318,8 @@ button {
 	-ms-transform: rotate(360deg);
 	-o-transform: rotate(360deg);
 	transform: rotate(360deg);
+}
+
+.modal-backdrop {
+	opacity: .4;
 }

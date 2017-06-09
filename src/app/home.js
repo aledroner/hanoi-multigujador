@@ -2,7 +2,7 @@ angular
 	.module('hanoi.home', [])
 	.component('hanoiHome', {
 		templateUrl: 'app/home.html',
-		controller: function(hanoi, toastr, $state, $stateParams, $timeout) {
+		controller: function(hanoi, toastr, $state, $stateParams, $timeout, $uibModal) {
 
 			// Constantes
 			const VM = this;
@@ -58,6 +58,9 @@ angular
 			 * @param  {String} player2Id Id aleatoria del jugador 2
 			 */
 			VM.borrarPartida = function(gameId, player1Id, player2Id) {
+				console.log(gameId);
+				console.log(player1Id);
+				console.log(player2Id);
 				if (player1Id) {
 					REF_USERS.child(player1Id).update({
 						activeGame: false
@@ -69,7 +72,7 @@ angular
 					});
 				}
 				REF_GAMES.child(gameId).remove();
-				toastr.info(MSG_GAME_DELETED);
+				toastr.info(hanoi.message.game_deleted);
 			}
 
 			/**
@@ -80,5 +83,60 @@ angular
 				return randomId();
 			}
 
+			/**
+			 * Muestra una ventana modal para borrar una partida
+			 * @param  {String} gameId    Id aleatoria del juego
+			 * @param  {String} player1Id Id aleatoria del jugador 1
+			 * @param  {String} player2Id Id aleatoria del jugador 2
+			 */
+			VM.modal = function(gameId, player1Id, player2Id) {
+				var modalInstance = $uibModal.open({
+					animation: false,
+					component: 'modalComponent',
+					resolve: {
+						gameId: function() {
+							return gameId;
+						},
+						player1Id: function() {
+							return player1Id;
+						},
+						player2Id: function() {
+							return player2Id;
+						}
+					}
+				});
+
+				modalInstance.result.then(function(resolve) {
+					VM.borrarPartida(resolve.gameId, resolve.player1Id, resolve.player2Id);
+				}, function() {
+					console.log('modal-component dismissed at: ' + new Date());
+				});
+			};
+
+		}
+	})
+	.component('modalComponent', {
+		templateUrl: 'app/modal.html',
+		bindings: {
+			resolve: '<',
+			close: '&',
+			dismiss: '&'
+		},
+		controller: function() {
+			const VM = this;
+			VM.borrar = function() {
+				VM.close({
+					$value: {
+						gameId: VM.resolve.gameId,
+						player1Id: VM.resolve.player1Id,
+						player2Id: VM.resolve.player2Id
+					}
+				});
+			};
+			VM.cancel = function() {
+				VM.dismiss({
+					$value: 'cancel'
+				});
+			};
 		}
 	});
