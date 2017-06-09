@@ -7,10 +7,11 @@ angular
 			// Constantes
 			const VM = this;
 
-			// Evento cuando hay un cambio en la autenticación
+			// Evento que lee si hay un usuario logueado
 			firebase.auth().onAuthStateChanged(function(user) {
-				if (user)
+				if (user) {
 					$state.go('app.home');
+				}
 			});
 
 			/**
@@ -26,9 +27,9 @@ angular
 						hanoi.createNewUser(result, social);
 					})
 					.catch(function(error) {
-						toastr.error(error.message);
+						console.log(error.message);
+						toastr.error(hanoi.message.error);
 					});
 			}
-
 		}
 	});

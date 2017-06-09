@@ -2,22 +2,27 @@ angular
 	.module('hanoi.header', [])
 	.component('hanoiHeader', {
 		templateUrl: 'app/header.html',
-		controller: function($stateParams, toastr) {
+		controller: function(hanoi, toastr, $state, $timeout) {
 			// Constantes
 			const VM = this;
 			const MSG_ERROR = 'Ha ocurrido un error escandaloso.';
 
-			/**
-			 * Cuando se crea el controlador
-			 */
-			VM.$onInit = function() {
-				VM.stateParams = $stateParams;
-				VM.userLogged = {
-					profile: {
-						picture: 'app/img/user.png'
-					}
+			// Variables
+			VM.uid = 'noLogged';
+			VM.isLogged = false;
+			VM.profilePicture = 'app/img/user.png';
+
+			// Evento que lee si hay un usuario logueado
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					VM.isLogged = true;
+					hanoi.ref.users.child(user.uid).on('value', function(snap) {
+						VM.profilePicture = snap.val().profile.picture;
+					});
+				} else {
+					$state.go('app.login');
 				}
-			};
+			});
 
 			/**
 			 * Cierra sesión
@@ -25,25 +30,12 @@ angular
 			VM.signOut = function() {
 				firebase.auth().signOut()
 					.then(function() {
-						go(null);
-						localStorage.setItem('userId', '');
-						toastr.info(MSG_SIGNOUT);
-					}).catch(function(err) {
-						toastr.success(MSG_ERROR)
+						VM.isLogged = false;
+						toastr.info(hanoi.message.signout);
+					}).catch(function(error) {
+						console.log(error.message);
+						toastr.error(hanoi.message.error);
 					});
 			}
-
-
-
-			/**
-			 * Te lleva a una partida
-			 * @param  {String} gameId Id aleatoria del juego
-			 */
-			function go(gameId) {
-				$state.go($state.current, {
-					game: gameId
-				});
-			}
-
 		}
-	});
+	});;

@@ -16,6 +16,15 @@ angular
 		const GAME_DELETED = 'Partida directa al incinerador.';
 
 		return {
+
+			/**
+			 * Referencia a los nodos principales de la base de datos
+			 * @type {Object}
+			 */
+			ref: {
+				users: REF_USERS,
+				games: REF_GAMES
+			},
 			/**
 			 * Mensajes que se muestran al usuario
 			 * @type {Object}
@@ -30,6 +39,42 @@ angular
 				game_deleted: GAME_DELETED
 			},
 
+			/**
+			 * Crea un nuevo objeto en la base de datos
+			 * @param  {Object} ref    Referencia de la base de datos
+			 * @param  {Object} object Objeto a crear
+			 */
+			create: function(ref, object) {
+				ref.set(object, function(err) {
+					if (err) {
+						console.log(err.message);
+					} else {
+						console.log('SET: ', object);
+					}
+				});
+			},
+
+			/**
+			 * Actualiza un objeto de la base de datos
+			 * @param  {Object} ref    Referencia de la base de datos
+			 * @param  {String} id     Id del child a actualizar
+			 * @param  {Object} object Objeto a crear
+			 */
+			update: function(ref, id, object) {
+				ref.child(id).update(object, function(err) {
+					if (err) {
+						console.log(err.message);
+					} else {
+						console.log('UPDATE: ', object);
+					}
+				});
+			},
+
+			/**
+			 * Crea un usuario nuevo en la base de datos
+			 * @param  {Object} result Objeto resultado de iniciar sesión
+			 * @param  {String} social Red social desde la que inicias sesión
+			 */
 			createNewUser: function(result, social) {
 				var uid = result.user.uid;
 				REF_USERS.once('value').then(function(snap) {
@@ -129,18 +174,7 @@ angular
 				toastr.info(MSG_GAME_DELETED);
 			}
 
-			// Evento cuando hay un cambio en la autenticación
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-					$stateParams.log = true;
-					REF_USERS.child(localStorage.getItem('userId')).on('value', function(snap) {
-						VM.userLogged = snap.val();
-					})
-				} else {
-					$stateParams.log = false;
-					$stateParams.game = null;
-				}
-			});
+
 
 			// Setea quién es el jugador 1 y el jugador 2
 			if ($stateParams.game != null) {
