@@ -4,8 +4,11 @@ angular
 		'ui.bootstrap',
 		'firebase',
 		'toastr',
-		'hanoi.main',
-		'hanoi.footer'
+		'hanoi.header',
+		'hanoi.footer',
+		'hanoi.login',
+		'hanoi.home',
+		'hanoi.game'
 	])
 	.config(function(toastrConfig) { // Configura los toastr
 		angular.extend(toastrConfig, {

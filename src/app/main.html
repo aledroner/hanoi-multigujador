@@ -1,95 +1,9 @@
 <div class="main-container">
-	<header class="header bg_light_grey">
-		<div class="container">
-			<nav class="navbar d-flex flex-row justify-content-start align-items-center">
-				<a ui-sref="app({game:undefined})" class="animated infinite jellos">
-					<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
-				</a>
-				<a class="header-title" ui-sref="app({game:undefined})">Hanoi</a>
-				<div class="log-buttons d-flex ml-auto" ng-if="$ctrl.stateParams.log==true">
-					<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión </a>
-					<img id="log-player1-picture" class="turn player-picture" ng-src="{{$ctrl.userLogged.profile.picture}}">
-				</div>
-			</nav>
-		</div>
-	</header>
+	<hanoi-header></hanoi-header>
 	<main class="main" class="d-flex">
-
-		<div id="logIn" class="logIn bg_light_grey" ng-if="$ctrl.stateParams.log==false">
-			<div class="d-flex flex-column align-items-center">
-				<h3>Inicia sesión</h3>
-				<button ng-click="$ctrl.signIn('t')" type="button" class="btn btn-primary btn-lg btn-block bg_twitter">
-					<span class="fa fa-twitter"></span>&nbsp; Twitter
-				<button ng-click="$ctrl.signIn('g')" type="button" class="btn btn-primary btn-lg btn-block bg_google">
-					<span class="fa fa-google"></span>&nbsp; Google
-			</div>
-		</div>
-
-		<div id="game" ng-show="$ctrl.stateParams.log==true && $ctrl.stateParams.game!=null">
-			<div class="game d-flex flex-row">
-
-				<div id="player1" class="player">
-					<div class="title-player d-flex justify-content-center align-items-center">
-						<img id="player1-picture" class="turn player-picture" src="{{$ctrl.player1.picture}}">
-						<h3 id="player1-name">{{$ctrl.player1.name}}</h3>
-					</div>
-					<div id="player1-canvas" class="canvas">
-
-					</div>
-					<nav id="controlls" class="controls text-center">
-						<button id="accion1" class="btn scale">Coger
-						<button id="accion2" class="btn scale">Coger
-						<button id="accion3" class="btn scale">Coger
-					</nav>
-				</div>
-
-				<div id="player2" class="player">
-					<div class="title-player d-flex justify-content-center align-items-center">
-						<img id="player2-picture" class="turn player-picture" src="{{$ctrl.player2.picture}}">
-						<h3 id="player2-name">{{$ctrl.player2.name}}</h3>
-					</div>
-					<div id="player2-canvas" class="canvas">
-
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div id="games" ng-if="$ctrl.stateParams.log==true && $ctrl.stateParams.game==null">
-			<div class="games-title d-flex justify-content-between">
-				<h4>Partidas online</h4>
-				<button ng-click="$ctrl.crearPartida($ctrl.generarIdGame(), 'crear')" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
-			</div>
-			<div class="games">
-				<table class="table">
-					<thead class="thead-default text-center">
-						<tr class="text-center">
-							<th><span class="fa fa-clock-o"></span></th>
-							<th># Id</th>
-							<th><span class="fa fa-signal"></span> Nivel</th>
-							<th><span class="fa fa-user"></span> Jugador 1</th>
-							<th><span class="fa fa-user"></span> Jugador 2</th>
-							<th><span class="fa fa-gamepad"></span> Acción</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="text-center" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date' track by game.id">
-							<th><span class="hour">{{game.date | date : 'HH:mm:ss'}}</span></th>
-							<th>{{game.id}}</th>
-							<th>{{game.level}}</th>
-							<td><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}}</td>
-							<td><img class="turn player-picture" ng-src="{{game.player2.picture}}">{{game.player2.name}}</td>
-							<td>
-								<button ng-if="game.full==false" ng-click="$ctrl.crearPartida(game.id, 'unir')" type="button" class="btn btn-success scale"><span class="fa fa-arrow-right"></span>
-								<button ng-if="game.full==true" ng-click="$ctrl.crearPartida(game.id, 'ver')" type="button" class="btn btn-secondary scale"><span class="fa fa-eye"></span>
-								<button ng-if="$ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid" ng-click="$ctrl.modal(game.id, game.player1.uid, game.player2.uid)" type="button" class="btn btn-danger scale trash"><span class="fa fa-trash-o"></span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-
+		<ui-view>
+			<hanoi-home></hanoi-home>
+		</ui-view>
 	</main>
 	<hanoi-footer></hanoi-footer>
 </div>

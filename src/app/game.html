@@ -1,0 +1,29 @@
+<div id="game">
+	<div class="game d-flex flex-row">
+
+		<div id="player1" class="player">
+			<div class="title-player d-flex justify-content-center align-items-center">
+				<img id="player1-picture" class="turn player-picture" src="{{$ctrl.player1.picture}}">
+				<h3 id="player1-name">{{$ctrl.player1.name}}</h3>
+			</div>
+			<div id="player1-canvas" class="canvas">
+
+			</div>
+			<nav id="controlls" class="controls text-center">
+				<button id="accion1" class="btn scale">Coger
+				<button id="accion2" class="btn scale">Coger
+				<button id="accion3" class="btn scale">Coger
+			</nav>
+		</div>
+
+		<div id="player2" class="player">
+			<div class="title-player d-flex justify-content-center align-items-center">
+				<img id="player2-picture" class="turn player-picture" src="{{$ctrl.player2.picture}}">
+				<h3 id="player2-name">{{$ctrl.player2.name}}</h3>
+			</div>
+			<div id="player2-canvas" class="canvas">
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,5 +1,48 @@
 angular
-	.module('hanoi.main', [])
+	.module('app')
+	.factory('hanoi', function(toastr) {
+
+		// Constantes
+		const REF_USERS = getRef('users');
+		const REF_GAMES = getRef('games');
+
+		// Mensajes
+		const SIGNIN = '¡Saludos! ';
+		const SIGNOUT = '¡Hasta pronto figura!';
+		const ERROR = 'Ha ocurrido un error escandaloso.';
+		const GAME_ACTIVED = 'Ya estás en una partida; no pretendas ser omnipresente.';
+		const GAME_CREATED = 'Partida creada. Ve a por un snack mientras esperas a tu oponente.';
+		const GAME_JOINED = 'Has retado al malvado ';
+		const GAME_DELETED = 'Partida directa al incinerador.';
+
+		return {
+			/**
+			 * Mensajes que se muestran al usuario
+			 * @type {Object}
+			 */
+			message: {
+				signin: SIGNIN,
+				signout: SIGNOUT,
+				error: ERROR,
+				game_actived: GAME_ACTIVED,
+				game_created: GAME_CREATED,
+				game_joined: GAME_JOINED,
+				game_deleted: GAME_DELETED
+			},
+
+			createNewUser: function(result, social) {
+				var uid = result.user.uid;
+				REF_USERS.once('value').then(function(snap) {
+					var user = createUser(social, result);
+					if (!snap.hasChild(uid)) {
+						REF_USERS.child(uid).set(user);
+					}
+					toastr.success(SIGNIN + user.profile.name);
+				});
+			}
+
+		}
+	})
 	.component('app', {
 		templateUrl: 'app/main.html',
 		controller: function($stateParams, $state, $timeout, $uibModal, toastr) {
@@ -9,27 +52,6 @@ angular
 			const REF_USERS = getRef('users');
 			const REF_GAMES = getRef('games');
 
-			// Mensajes
-			const MSG_SIGNIN = '¡Saludos! ';
-			const MSG_SIGNOUT = '¡Hasta pronto figura!';
-			const MSG_ERROR = 'Ha ocurrido un error escandaloso.';
-			const MSG_GAME_ACTIVED = 'Ya estás en una partida, no pretendas ser omnipresente.';
-			const MSG_GAME_CREATED = 'Partida creada. Ve a por un snack mientras esperas a tu oponente.';
-			const MSG_GAME_JOINED = 'Has retado al malvado ';
-			const MSG_GAME_DELETED = 'Partida directa al incinerador.';
-
-			/**
-			 * Cuando se crea el controlador
-			 */
-			VM.$onInit = function() {
-				VM.stateParams = $stateParams;
-				VM.userLogged = {
-					profile: {
-						picture: 'app/img/user.png'
-					}
-				}
-			};
-
 			// Evento que actualiza el array de partidas online
 			REF_GAMES.on('value', function(snap) {
 				$timeout(function() {
@@ -38,45 +60,6 @@ angular
 					});
 				});
 			});
-
-			/**
-			 * Inicia sesión
-			 * @param  {String} social Red social con la que inicias sesión
-			 */
-			VM.signIn = function(social) {
-				var provider;
-				if (social === 't') provider = new firebase.auth.TwitterAuthProvider();
-				if (social === 'g') provider = new firebase.auth.GoogleAuthProvider();
-				firebase.auth().signInWithPopup(provider)
-					.then(function(result) {
-						var uid = result.user.uid;
-						localStorage.setItem('userId', uid);
-						REF_USERS.once('value').then(function(snap) {
-							var user = createUser(social, result);
-							if (!snap.hasChild(uid)) {
-								REF_USERS.child(uid).set(user);
-							}
-							toastr.success(MSG_SIGNIN + user.profile.name);
-						});
-					})
-					.catch(function(error) {
-						toastr.error(error.message);
-					});
-			}
-
-			/**
-			 * Cierra sesión
-			 */
-			VM.signOut = function() {
-				firebase.auth().signOut()
-					.then(function() {
-						go(null);
-						localStorage.setItem('userId', '');
-						toastr.info(MSG_SIGNOUT);
-					}).catch(function(err) {
-						toastr.success(MSG_ERROR)
-					});
-			}
 
 			/**
 			 * Crea o se une a una partida nueva multijugador

@@ -1,0 +1,14 @@
+<header class="header bg_light_grey">
+	<div class="container">
+		<nav class="navbar d-flex flex-row justify-content-start align-items-center">
+			<a ui-sref="app" class="animated infinite jellos">
+				<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
+			</a>
+			<a class="header-title" ui-sref="app">Hanoi</a>
+			<div class="log-buttons d-flex ml-auto">
+				<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión </a>
+				<img id="log-player1-picture" class="turn player-picture" ng-src="{{$ctrl.userLogged.profile.picture}}">
+			</div>
+		</nav>
+	</div>
+</header>
