@@ -39,17 +39,54 @@ angular
 			 * @param  {String} gameId Id aleatoria del juego
 			 * @param  {String} mode   Modo de entrar ['Crear' | 'Unir' | 'Ver']
 			 */
-			VM.crearPartida = function(gameId, mode) {
-				if (mode == 'crear') {
-					hanoi.createGame(gameId, mode);
-				} else if (mode == 'unir') {
-					hanoi.joinGame(gameId, mode);
-				} else if (mode == 'ver') {
-					$state.go('app.game', {
-						'gameId': gameId
+			VM.crearPartida = function(game) {
+				var uid = VM.userLogged.profile.uid;
+				if (game == null) {
+					REF_USERS.child(uid).once('value', function(snap) {
+						var user = snap.val();
+						if (user.activeGame) {
+							toastr.info(hanoi.message.game_actived);
+						} else {
+							VM.modalLevelGame();
+						}
+					});
+				} else {
+					REF_USERS.child(uid).once('value', function(snap) {
+						var user = snap.val();
+						if (game.player1.uid == uid || game.player2.uid == uid) {
+							$state.go('app.game', {
+								'gameId': game.id
+							});
+						} else {
+							if (user.activeGame) {
+								toastr.info(hanoi.message.game_actived);
+							} else {
+								hanoi.joinGame(game, user);
+							}
+						}
 					});
 				}
 			}
+
+			/**
+			 * Muestra una ventana modal para elegir el nivel de la partida
+			 */
+			VM.modalLevelGame = function() {
+				var modalInstance = $uibModal.open({
+					animation: false,
+					component: 'modalLevelGame',
+					resolve: {
+						level: function() {
+							return 1;
+						}
+					}
+				});
+				modalInstance.result.then(function(level) {
+					hanoi.createGame(randomId(), level);
+				}, function() {
+					console.log('modal-component dismissed at: ' + new Date());
+				});
+			};
 
 			/**
 			 * Borra una partida
@@ -71,27 +108,6 @@ angular
 				REF_GAMES.child(gameId).remove();
 				toastr.info(hanoi.message.game_deleted);
 			}
-
-			/**
-			 * Muestra una ventana modal para elegir el nivel de la partida
-			 */
-			VM.modalLevelGame = function() {
-				var modalInstance = $uibModal.open({
-					animation: false,
-					component: 'modalLevelGame',
-					resolve: {
-						level: function() {
-							return 1;
-						}
-					}
-				});
-
-				modalInstance.result.then(function(level) {
-					hanoi.createGame(randomId(), level);
-				}, function() {
-					console.log('modal-component dismissed at: ' + new Date());
-				});
-			};
 
 			/**
 			 * Muestra una ventana modal para borrar una partida

@@ -94,7 +94,26 @@ angular
 			createNewUser: function(result, social) {
 				var uid = result.user.uid;
 				REF_USERS.once('value').then(function(snap) {
-					var user = createUser(social, result);
+					var user = {}
+					if (social === 't') {
+						user = {
+							activeGame: false,
+							profile: {
+								uid: result.user.uid,
+								name: result.additionalUserInfo.profile.screen_name,
+								picture: result.additionalUserInfo.profile.profile_image_url_https
+							}
+						};
+					} else if (social === 'g') {
+						user = {
+							activeGame: false,
+							profile: {
+								uid: result.user.uid,
+								name: result.additionalUserInfo.profile.given_name,
+								picture: result.additionalUserInfo.profile.picture
+							}
+						};
+					}
 					if (!snap.hasChild(uid)) {
 						REF_USERS.child(uid).set(user);
 					}
@@ -105,56 +124,50 @@ angular
 			/**
 			 * Crea una partida nueva multijugador
 			 * @param  {String} gameId Id aleatoria del juego
-			 * @param  {String} mode   Modo de entrar ['Crear' | 'Unir' | 'Ver']
+			 * @param  {Int} 	level  Nivel de la partida
 			 */
 			createGame: function(gameId, level) {
 				REF_USERS.child(currentUser).once('value', function(snap) {
 					var user = snap.val();
-					if (user.activeGame) {
-						toastr.info(GAME_ACTIVED);
-					} else {
-						$state.go('app.game', {
-							'gameId': gameId
-						});
-						REF_USERS.child(currentUser).update({
-							activeGame: true
-						});
-						setGame(currentUser, gameId, level);
-						toastr.success(GAME_CREATED);
+					var game = {
+						full: false,
+						date: new Date().getTime(),
+						id: gameId,
+						level: level,
+						player1: user.profile,
+						player2: {
+							name: 'Esperando...',
+							picture: '/app/img/user.png'
+						}
 					}
+					REF_GAMES.child(gameId).set(game);
 				});
+				REF_USERS.child(currentUser).update({
+					activeGame: true
+				});
+				$state.go('app.game', {
+					'gameId': gameId
+				});
+				toastr.success(GAME_CREATED);
 			},
 
 			/**
 			 * Se une a una partida ya creada
 			 * @param  {String} gameId Id aleatoria del juego
-			 * @param  {String} mode   Modo de entrar ['Crear' | 'Unir' | 'Ver']
+			 * @param  {Int} 	level  Nivel de la partida
 			 */
-			joinGame: function(gameId, mode) {
-				REF_GAMES.child(gameId).once('value', function(snap) {
-					var game = snap.val();
-					REF_USERS.child(currentUser).once('value', function(snap) {
-						var user = snap.val();
-						if (game.player1.uid == currentUser || game.player2.uid == currentUser) {
-							$state.go('app.game', {
-								'gameId': gameId
-							});
-						} else {
-							if (user.activeGame) {
-								toastr.info(GAME_ACTIVED);
-							} else {
-								$state.go('app.game', {
-									'gameId': gameId
-								});
-								REF_USERS.child(currentUser).update({
-									activeGame: true
-								});
-								setGame(currentUser, gameId, mode);
-								toastr.success(GAME_JOINED + game.player1.name);
-							}
-						}
-					});
+			joinGame: function(game, user) {
+				REF_GAMES.child(game.id).update({
+					full: true,
+					player2: user.profile
 				});
+				REF_USERS.child(currentUser).update({
+					activeGame: true
+				});
+				$state.go('app.game', {
+					'gameId': game.id
+				});
+				toastr.success(GAME_JOINED + game.player1.name);
 			},
 
 		}
