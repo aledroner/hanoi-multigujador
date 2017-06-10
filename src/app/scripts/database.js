@@ -14,7 +14,7 @@ function getChild(node, child) {
  * @param  {Int}    level Número de discos de la partida
  * @return {Object}       Perfil del jugador actualizado con los discos
  */
-function createObjectPlayer(user, level) {
+function createObjectPlayer(user, level, player1) {
 
 	var arrayDisks = [];
 	var position = 1;
@@ -35,7 +35,8 @@ function createObjectPlayer(user, level) {
 		picture: user.profile.picture,
 		uid: user.profile.uid,
 		disks: arrayDisks,
-		action: 'Coger'
+		action: 'Coger',
+		player1: player1
 	}
 
 	return player;

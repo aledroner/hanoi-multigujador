@@ -9,7 +9,7 @@
 			<div class="canvas-content">
 				<canvas id="player1-canvas" class="canvas"></canvas>
 			</div>
-			<nav id="controlls" ng-if="canvas.owner" class="controls text-center d-flex justify-content-around">
+			<nav id="controlls" ng-if="canvas.owner && canvas.player1" class="controls text-center d-flex justify-content-around">
 				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(-1)" class="btn scale">{{canvas.action}}
 				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(0)" class="btn scale">{{canvas.action}}
 				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(1)" class="btn scale">{{canvas.action}}
@@ -24,6 +24,11 @@
 			<div class="canvas-content">
 				<canvas id="player2-canvas" class="canvas"></canvas>
 			</div>
+			<nav id="controlls" ng-if="canvas.owner && canvas.player2" class="controls text-center d-flex justify-content-around">
+				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(-1)" class="btn scale">{{canvas.action}}
+				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(0)" class="btn scale">{{canvas.action}}
+				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(1)" class="btn scale">{{canvas.action}}
+			</nav>
 		</div>
 	</div>
 

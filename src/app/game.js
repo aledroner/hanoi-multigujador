@@ -26,13 +26,8 @@ angular
 				if ($stateParams.gameId != null) {
 					$timeout(function() {
 						var game = snap.val();
-						if (game.player1.uid === firebase.auth().currentUser.uid) {
-							VM.player1 = snap.val().player1;
-							VM.player2 = snap.val().player2;
-						} else {
-							VM.player1 = snap.val().player2;
-							VM.player2 = snap.val().player1;
-						}
+						VM.player1 = snap.val().player1;
+						VM.player2 = snap.val().player2;
 					});
 				}
 			});

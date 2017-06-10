@@ -91,11 +91,19 @@ angular
 			// Establece quién es el jugador actual
 			if (VM.game.player1.uid == VM.uid) {
 				VM.currentUser = VM.game.player1;
-				VM.refCurentuser = VM.refGame.child('player1');
+				VM.refCurentUser = VM.refGame.child('player1');
 			} else {
 				VM.currentUser = VM.game.player2;
-				VM.refCurentuser = VM.refGame.child('player2');
+				VM.refCurentUser = VM.refGame.child('player2');
 			}
+
+			if (VM.currentUser.player1) {
+				VM.player1 = true;
+			} else {
+				VM.player2 = true;
+			}
+
+			console.log(VM.currentUser);
 
 			VM.lastDisk = VM.currentUser.lastDisk;
 			VM.action = VM.currentUser.action;
@@ -129,11 +137,7 @@ angular
 			var dataGame;
 
 			if (VM.game.full) {
-				if (VM.game.player1.uid === VM.uid) {
-					dataGame = [p1, p2]
-				} else {
-					dataGame = [p2, p1]
-				}
+				dataGame = [p1, p2]
 			} else {
 				dataGame = [p1]
 			}
@@ -174,10 +178,10 @@ angular
 			if (VM.action == 'Coger') {
 				var last = getLastDisk(tow, disks);
 				last.pos = 12;
-				VM.refCurentuser.update({
+				VM.refCurentUser.update({
 					lastDisk: last
 				}).then(function() {
-					VM.refCurentuser.child('disks').child(last.id).update(last)
+					VM.refCurentUser.child('disks').child(last.id).update(last)
 				});
 			} else {
 
@@ -196,9 +200,9 @@ angular
 				action: 'Soltar'
 			};
 			if (VM.currentUser.action == 'Coger') {
-				VM.refCurentuser.update(soltar);
+				VM.refCurentUser.update(soltar);
 			} else {
-				VM.refCurentuser.update(coger)
+				VM.refCurentUser.update(coger)
 			}
 		}
 	});
