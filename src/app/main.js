@@ -17,6 +17,8 @@ angular
 		const GAME_CREATED = 'Partida creada. Ve a por un snack mientras esperas a tu oponente.';
 		const GAME_JOINED = 'Has retado al malvado ';
 		const GAME_DELETED = 'Partida directa al incinerador.';
+		const GAME_WAIT = 'Espera a que tu openente quiera empezar.';
+		const GAME_START = '¡QUE COMIENCE EL DU-DU-DU-DUELO!';
 
 		var currentUser = 'noPlayer';
 
@@ -52,7 +54,9 @@ angular
 				game_actived: GAME_ACTIVED,
 				game_created: GAME_CREATED,
 				game_joined: GAME_JOINED,
-				game_deleted: GAME_DELETED
+				game_deleted: GAME_DELETED,
+				game_wait: GAME_WAIT,
+				game_start: GAME_START
 			},
 
 			/**
@@ -134,6 +138,7 @@ angular
 						date: new Date().getTime(),
 						id: gameId,
 						level: level,
+						gameStart: false,
 						player1: createObjectPlayer(user, level),
 						player2: {
 							name: 'Esperando...',

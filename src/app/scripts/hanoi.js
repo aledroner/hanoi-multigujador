@@ -1,6 +1,6 @@
 angular
 	.module('hanoi.canvas', [])
-	.controller('CanvasCtrl', function CanvasCtrl($stateParams) {
+	.controller('CanvasCtrl', function CanvasCtrl(hanoi, $stateParams, toastr) {
 
 		// Constantes
 		const VM = this;
@@ -81,8 +81,29 @@ angular
 			});
 		}
 
+		// Evento que lee el objeto del juego cada vez que hay un cambio en él
 		REF_GAMES.child($stateParams.gameId).on('value', function(snap) {
 			var game = snap.val();
+			var uid = firebase.auth().currentUser.uid;
+
+			// Controla que los controles sólo se muestran al jugador activo
+			if (game.player1.uid === uid || game.player2.uid === uid) {
+				VM.owner = true;
+			}
+
+			// Define que el jugador actual está listo para empezar
+			if (game.full)
+				VM.gameFull = true
+
+			// Define que el jugador actual está listo para empezar
+			if (game.playerWaiting == uid)
+				VM.ready = true
+
+			// Define si la partida ha empezado
+			if (game.gameStart)
+				VM.gameStart = true;
+
+			// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
 			var p1 = {
 				ctx: ctx1,
 				disks: game.player1.disks
@@ -92,8 +113,9 @@ angular
 				disks: game.player2.disks
 			};
 			var dataGame;
+
 			if (game.full) {
-				if (game.player1.uid === firebase.auth().currentUser.uid) {
+				if (game.player1.uid === uid) {
 					dataGame = [p1, p2]
 				} else {
 					dataGame = [p2, p1]
@@ -102,6 +124,32 @@ angular
 				dataGame = [p1]
 			}
 
-			drawDisks(dataGame);
+			if (game.gameStart) {
+				drawDisks(dataGame);
+			}
 		});
+
+		/**
+		 * Empieza la partida si el otro jugador ya está preparado
+		 */
+		VM.empezar = function() {
+			REF_GAMES.child($stateParams.gameId).once('value')
+				.then(function(snap) {
+					var game = snap.val();
+					var uid = firebase.auth().currentUser.uid;
+					if (game.playerWaiting != undefined) {
+						REF_GAMES.child($stateParams.gameId).update({
+							gameStart: true
+						}).then(function() {
+							toastr.info(hanoi.message.game_start);
+						})
+					} else {
+						REF_GAMES.child($stateParams.gameId).update({
+							playerWaiting: uid
+						}).then(function() {
+							toastr.info(hanoi.message.game_wait);
+						})
+					}
+				})
+		}
 	});
