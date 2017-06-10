@@ -33,7 +33,8 @@ function createObjectPlayer(user, level) {
 		name: user.profile.name,
 		picture: user.profile.picture,
 		uid: user.profile.uid,
-		disks: arrayDisks
+		disks: arrayDisks,
+		accion: 'Coger'
 	}
 
 	return player;

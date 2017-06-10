@@ -6,6 +6,7 @@ angular
 		const VM = this;
 		const REF_USERS = getRef('users');
 		const REF_GAMES = getRef('games');
+		VM.btnAccion = 'Coger';
 
 		// Variables canvas
 		var canvas1 = document.getElementById('player1-canvas');
@@ -15,7 +16,7 @@ angular
 
 		var arrayContexts = [ctx1, ctx2];
 
-		// Colores discos
+		// Colores discosuid
 		var colors = ['#d63d3d', '#d6743d', '#d3d63d', '#3dd663', '#3dd6d6', '#3d63d6', '#653dd6', '#a13dd6', '#d63d90'];
 		var woodColor = '#9c632e';
 		var borderColor = '#222';
@@ -83,39 +84,48 @@ angular
 
 		// Evento que lee el objeto del juego cada vez que hay un cambio en él
 		REF_GAMES.child($stateParams.gameId).on('value', function(snap) {
-			var game = snap.val();
-			var uid = firebase.auth().currentUser.uid;
+			VM.game = snap.val();
+			VM.uid = firebase.auth().currentUser.uid;
+
+			// Establece quién es el jugador actual
+			if (VM.game.player1.uid == VM.uid) {
+				VM.currentUser = VM.game.player1;
+			} else {
+				VM.currentUser = VM.game.player2;
+			}
+
+			VM.btnAccion = VM.currentUser.accion;
 
 			// Controla que los controles sólo se muestran al jugador activo
-			if (game.player1.uid === uid || game.player2.uid === uid) {
+			if (VM.game.player1.uid === VM.uid || VM.game.player2.uid === VM.uid) {
 				VM.owner = true;
 			}
 
 			// Define que el jugador actual está listo para empezar
-			if (game.full)
+			if (VM.game.full)
 				VM.gameFull = true
 
 			// Define que el jugador actual está listo para empezar
-			if (game.playerWaiting == uid)
+			if (VM.game.playerWaiting == VM.uid)
 				VM.ready = true
 
 			// Define si la partida ha empezado
-			if (game.gameStart)
+			if (VM.game.gameStart)
 				VM.gameStart = true;
 
 			// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
 			var p1 = {
 				ctx: ctx1,
-				disks: game.player1.disks
+				disks: VM.game.player1.disks
 			};
 			var p2 = {
 				ctx: ctx2,
-				disks: game.player2.disks
+				disks: VM.game.player2.disks
 			};
 			var dataGame;
 
-			if (game.full) {
-				if (game.player1.uid === uid) {
+			if (VM.game.full) {
+				if (VM.game.player1.uid === VM.uid) {
 					dataGame = [p1, p2]
 				} else {
 					dataGame = [p2, p1]
@@ -124,7 +134,7 @@ angular
 				dataGame = [p1]
 			}
 
-			if (game.gameStart) {
+			if (VM.game.gameStart) {
 				drawDisks(dataGame);
 			}
 		});
@@ -133,23 +143,75 @@ angular
 		 * Empieza la partida si el otro jugador ya está preparado
 		 */
 		VM.empezar = function() {
-			REF_GAMES.child($stateParams.gameId).once('value')
-				.then(function(snap) {
-					var game = snap.val();
-					var uid = firebase.auth().currentUser.uid;
-					if (game.playerWaiting != undefined) {
-						REF_GAMES.child($stateParams.gameId).update({
-							gameStart: true
-						}).then(function() {
-							toastr.info(hanoi.message.game_start);
-						})
-					} else {
-						REF_GAMES.child($stateParams.gameId).update({
-							playerWaiting: uid
-						}).then(function() {
-							toastr.info(hanoi.message.game_wait);
-						})
-					}
+			if (VM.game.playerWaiting != undefined) {
+				REF_GAMES.child(VM.game.id).update({
+					gameStart: true
+				}).then(function() {
+					toastr.info(hanoi.message.game_start);
 				})
+			} else {
+				REF_GAMES.child(VM.game.id).update({
+					playerWaiting: VM.uid
+				}).then(function() {
+					toastr.info(hanoi.message.game_wait);
+				})
+			}
+		}
+
+		/**
+		 * Bottón para coger o soltar discos
+		 * @param  {Int} tow El identificador de la torre
+		 */
+		VM.accion = function(tow) {
+			var disks = VM.currentUser.disks;
+			cambiarAccion();
+
+		}
+
+		/**
+		 * Cambia la acción de los botones
+		 * @return {[type]} [description]
+		 */
+		function cambiarAccion() {
+			var refGame = getRef('games/' + VM.game.id);
+			var childP1 = refGame.child('player1');
+			var childP2 = refGame.child('player2');
+			var coger = {
+				accion: 'Coger'
+			};
+			var soltar = {
+				accion: 'Soltar'
+			};
+			if (VM.game.player1.uid == VM.uid) {
+				if (VM.currentUser.accion == 'Coger') {
+					childP1.update(soltar);
+				} else {
+					childP1.update(coger)
+				}
+			} else {
+				if (VM.currentUser.accion == 'Coger') {
+					childP2.update(soltar)
+				} else {
+					childP2.update(coger)
+				}
+			}
 		}
 	});
+
+/**
+ * Devuelve la posición del último disco
+ * de la torre pasada por parámetro
+ * @param  {Int}   tow   El identificador de la torre
+ * @param  {Array} disks Array con los discos del jugador actual
+ * @return {Int}         Posición del último disco
+ */
+function getLastDisk(tow, disks) {
+	var last = 0;
+	for (var i = 0; i < disks.length; i++) {
+		var disk = disks[i];
+		if (disk.tow == tow)
+			if (disk.pos > last)
+				last = disk.pos
+	}
+	return last;
+}

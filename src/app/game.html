@@ -10,9 +10,9 @@
 				<canvas id="player1-canvas" class="canvas"></canvas>
 			</div>
 			<nav id="controlls" ng-if="canvas.owner" class="controls text-center d-flex justify-content-around">
-				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(-1)" class="btn scale">Coger
-				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(0)" class="btn scale">Coger
-				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(1)" class="btn scale">Coger
+				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(-1)" class="btn scale">{{canvas.btnAccion}}
+				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(0)" class="btn scale">{{canvas.btnAccion}}
+				<button ng-disabled="!canvas.gameStart" ng-click="canvas.accion(1)" class="btn scale">{{canvas.btnAccion}}
 			</nav>
 		</div>
 
