@@ -11,7 +11,7 @@ angular
 			const VM = this;
 
 			VM.levels = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-			VM.selected = 1;
+			VM.selected = 3;
 
 			VM.crear = function() {
 				VM.close({

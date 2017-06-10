@@ -6,7 +6,7 @@ angular
 		const VM = this;
 		const REF_USERS = getRef('users');
 		const REF_GAMES = getRef('games');
-		VM.btnAccion = 'Coger';
+		VM.action = 'Coger';
 
 		// Variables canvas
 		var canvas1 = document.getElementById('player1-canvas');
@@ -86,15 +86,19 @@ angular
 		REF_GAMES.child($stateParams.gameId).on('value', function(snap) {
 			VM.game = snap.val();
 			VM.uid = firebase.auth().currentUser.uid;
+			VM.refGame = hanoi.ref.games.child(VM.game.id);
 
 			// Establece quién es el jugador actual
 			if (VM.game.player1.uid == VM.uid) {
 				VM.currentUser = VM.game.player1;
+				VM.refCurentuser = VM.refGame.child('player1');
 			} else {
 				VM.currentUser = VM.game.player2;
+				VM.refCurentuser = VM.refGame.child('player2');
 			}
 
-			VM.btnAccion = VM.currentUser.accion;
+			VM.lastDisk = VM.currentUser.lastDisk;
+			VM.action = VM.currentUser.action;
 
 			// Controla que los controles sólo se muestran al jugador activo
 			if (VM.game.player1.uid === VM.uid || VM.game.player2.uid === VM.uid) {
@@ -135,6 +139,9 @@ angular
 			}
 
 			if (VM.game.gameStart) {
+				ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+				ctx2.clearRect(0, 0, canvas1.width, canvas1.height);
+				drawInit();
 				drawDisks(dataGame);
 			}
 		});
@@ -164,36 +171,34 @@ angular
 		 */
 		VM.accion = function(tow) {
 			var disks = VM.currentUser.disks;
-			cambiarAccion();
+			if (VM.action == 'Coger') {
+				var last = getLastDisk(tow, disks);
+				last.pos = 12;
+				VM.refCurentuser.update({
+					lastDisk: last
+				}).then(function() {
+					VM.refCurentuser.child('disks').child(last.id).update(last)
+				});
+			} else {
 
+			}
+			cambiarAccion();
 		}
 
 		/**
 		 * Cambia la acción de los botones
-		 * @return {[type]} [description]
 		 */
 		function cambiarAccion() {
-			var refGame = getRef('games/' + VM.game.id);
-			var childP1 = refGame.child('player1');
-			var childP2 = refGame.child('player2');
 			var coger = {
-				accion: 'Coger'
+				action: 'Coger'
 			};
 			var soltar = {
-				accion: 'Soltar'
+				action: 'Soltar'
 			};
-			if (VM.game.player1.uid == VM.uid) {
-				if (VM.currentUser.accion == 'Coger') {
-					childP1.update(soltar);
-				} else {
-					childP1.update(coger)
-				}
+			if (VM.currentUser.action == 'Coger') {
+				VM.refCurentuser.update(soltar);
 			} else {
-				if (VM.currentUser.accion == 'Coger') {
-					childP2.update(soltar)
-				} else {
-					childP2.update(coger)
-				}
+				VM.refCurentuser.update(coger)
 			}
 		}
 	});
@@ -206,12 +211,14 @@ angular
  * @return {Int}         Posición del último disco
  */
 function getLastDisk(tow, disks) {
-	var last = 0;
+	var lastDisk = {
+		pos: 0
+	};
 	for (var i = 0; i < disks.length; i++) {
 		var disk = disks[i];
 		if (disk.tow == tow)
-			if (disk.pos > last)
-				last = disk.pos
+			if (disk.pos > lastDisk.pos)
+				lastDisk = disk
 	}
-	return last;
+	return lastDisk;
 }

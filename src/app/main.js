@@ -12,7 +12,7 @@ angular
 		// Mensajes
 		const SIGNIN = '¡Saludos! ';
 		const SIGNOUT = '¡Hasta pronto figura!';
-		const ERROR = 'Ha ocurrido un error escandaloso.';
+		const ERROR = 'Ha ocurrido un error escandaloso. Vuelva a intentarlo más tarde.';
 		const GAME_ACTIVED = 'Ya estás en una partida, no pretendas ser omnipresente.';
 		const GAME_CREATED = 'Partida creada. Ve a por un snack mientras esperas a tu oponente.';
 		const GAME_JOINED = 'Has retado al malvado ';

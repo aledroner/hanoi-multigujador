@@ -21,6 +21,7 @@ function createObjectPlayer(user, level) {
 
 	for (var i = level; i > 0; i--) {
 		var disk = {
+			id: position - 1,
 			tam: i,
 			pos: position,
 			tow: -1
@@ -34,7 +35,7 @@ function createObjectPlayer(user, level) {
 		picture: user.profile.picture,
 		uid: user.profile.uid,
 		disks: arrayDisks,
-		accion: 'Coger'
+		action: 'Coger'
 	}
 
 	return player;
