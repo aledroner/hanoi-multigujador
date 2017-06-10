@@ -27,5 +27,7 @@
 		</div>
 	</div>
 
-	<button ng-if="!canvas.gameStart && canvas.owner && canvas.gameFull" ng-disabled="canvas.ready" ng-click="canvas.empezar();" class="btn bt-primary scale">Empezar partida
+	<div ng-if="!canvas.gameStart && canvas.owner && canvas.gameFull" class="buttons-control d-flex justify-content-around">
+		<button ng-disabled="canvas.ready" ng-click="canvas.empezar();" class="btn btn-success btn-lg scale btn-start" ng-class="{'animated infinite jello': !canvas.ready}">Empezar partida
+	</div>
 </div>
