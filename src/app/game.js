@@ -1,5 +1,5 @@
 angular
-	.module('hanoi.game', [])
+	.module('hanoi.game', ['hanoi.canvas'])
 	.component('hanoiGame', {
 		templateUrl: 'app/game.html',
 		controller: function(hanoi, $state, $stateParams, $timeout) {

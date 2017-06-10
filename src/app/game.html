@@ -6,8 +6,8 @@
 				<img id="player1-picture" class="turn player-picture" src="{{$ctrl.player1.picture}}">
 				<h3 id="player1-name">{{$ctrl.player1.name}}</h3>
 			</div>
-			<div id="player1-canvas" class="canvas">
-
+			<div class="canvas-content" ng-controller="CanvasCtrl">
+				<canvas id="player1-canvas" class="canvas"></canvas>
 			</div>
 			<nav id="controlls" class="controls text-center">
 				<button id="accion1" class="btn scale">Coger
@@ -21,8 +21,8 @@
 				<img id="player2-picture" class="turn player-picture" src="{{$ctrl.player2.picture}}">
 				<h3 id="player2-name">{{$ctrl.player2.name}}</h3>
 			</div>
-			<div id="player2-canvas" class="canvas">
-
+			<div class="canvas-content">
+				<canvas id="player2-canvas" class="canvas"></canvas>
 			</div>
 		</div>
 	</div>
