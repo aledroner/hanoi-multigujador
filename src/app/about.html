@@ -1,1 +1,51 @@
-sdgh
+<div class="rules container content">
+	<h1 class="rules-title">Acerca de...</h1>
+	<p>Torres de Hánoi Multijugador es el proyecto final de grado superior de Desarrollo de Aplicaciones Multiplataforma desarrollado por Alejandro Martín Fernández para el <a href="http://www.isepceu.es/" target="_blank">Instituto Superior de Estudios Profesionales San Pablo CEU de Madrid</a>.</p>
+	<p></p>
+	<h3 class="title-h3">Ingredientes secretos:</h3></p>
+	<p>Esta web ha sido creada con mucho amor y gracias a las siguientes tecnologías:</p>
+	<div class="techs" ng-controller="techCtrl as ctrl">
+		<div class="tech animated jellos" ng-repeat="tecnologia in ctrl.techs">
+			<div class="tect-headerd-flex flex-column">
+				<a class="d-flex justify-content-center " target="_blank" href="{{tecnologia.link}}">
+					<img class="tech-logo" ng-src="{{tecnologia.logo}}" />
+				</a>
+				<h3 class="tech-h3 text-center">
+					<a target="_blank" href="{{tecnologia.link}}">{{ tecnologia.title}}</a>
+				</h3>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="rules author container content">
+	<h3 class="title-h3">Acerca del autor:</h3>
+	<div class="d-flex">
+		<a href="https://twitter.com/aledroner" target="_blank">
+			<img src="app/img/author.png" class="author-image turn">
+		</a>
+		<div>
+			<p>Amante de las tecnologías, en especial de la programación multiplataforma y el diseño web. Además de mi formación académica en el ámbito, estoy continuamente adquiriendo nuevos conocimientos de forma autodidacta.</p>
+			<p>Más información sobre mí en:</p>
+		</div>
+	</div>
+	<nav class="nav-ul">
+		<ul class="d-flex justify-content-center">
+			<li>
+				<a href="https://twitter.com/aledroner" target="_blank">
+					<span class="fa fa-twitter"></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://github.com/aledroner" target="_blank">
+					<span class="fa fa-github"></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://www.linkedin.com/in/alejandro-mart%C3%ADn-fern%C3%A1ndez-bba110bb/" target="_blank">
+					<span class="fa fa-linkedin"></span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+</div>

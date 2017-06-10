@@ -22,10 +22,14 @@
 					<th>{{game.level}}</th>
 					<td><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}}</td>
 					<td><img class="turn player-picture" ng-src="{{game.player2.picture}}">{{game.player2.name}}</td>
-					<td>
-						<button ng-if="game.full==false" ng-click="$ctrl.crearPartida(game)" type="button" class="btn btn-success scale"><span class="fa fa-arrow-right"></span>
-						<button ng-if="game.full==true" ui-sref="app.game({gameId:game.id})" type="button" class="btn btn-secondary scale"><span class="fa fa-eye"></span>
-						<button ng-if="$ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid" ng-click="$ctrl.modalDeleteGame(game.id, game.player1.uid, game.player2.uid)" type="button" class="btn btn-danger scale trash"><span class="fa fa-trash-o"></span>
+					<td class="d-flex justify-content-center">
+						<div class="div-btn-games">
+							<button ng-if="game.full==false" ng-click="$ctrl.crearPartida(game)" type="button" class="btn btn-success scale"><span class="fa fa-arrow-right"></span>
+							<button ng-if="game.full==true" ui-sref="app.game({gameId:game.id})" type="button" class="btn btn-secondary scale"><span class="fa fa-eye"></span>
+						</div>
+						<div class="div-btn-games">
+							<button ng-if="$ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid" ng-click="$ctrl.modalDeleteGame(game.id, game.player1.uid, game.player2.uid)" type="button" class="btn btn-danger scale trash"><span class="fa fa-trash-o"></span>
+						</div>
 					</td>
 				</tr>
 			</tbody>

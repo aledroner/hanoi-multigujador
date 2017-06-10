@@ -43,7 +43,6 @@ button {
 	}
 
 	.navbar {
-
 		.navbar-brand {
 			position: relative;
 			top: -2px;
@@ -106,7 +105,8 @@ button {
 
 		.controls {
 			max-width: 500px;
-			    margin: 0 auto;
+			margin: 0 auto;
+
 			button {
 				width: 100px;
 				transition: all 0.1s;
@@ -120,9 +120,8 @@ button {
 
 	.buttons-control {
 		margin-top: 2em;
-		.btn-start {
 
-		}
+		.btn-start {}
 	}
 }
 
@@ -153,6 +152,10 @@ button {
 
 	th {
 		text-align: center;
+	}
+
+	.div-btn-games {
+		width: 50px;
 	}
 
 	.trash {
@@ -232,29 +235,106 @@ button {
 }
 /* $Rules
  -------------------------*/
- .rules {
-	 max-width: 800px;
-	 text-align: justify;
+
+.rules {
+	text-align: justify;
 
 	.rules-title {
-		margin-bottom: .8em;
+		margin-bottom: 0.8em;
 	}
-	h3 {
-		margin-top: 1.5em;
-		color: lighten($grey, 10);
-	}
+
 	p {
 		font-size: 1.1em;
 		font-style: italic;
 	}
-	img {
+
+	.graph {
+		width: 100%;
 		margin-bottom: 2em;
 	}
+
 	ol {
 		font-weight: 700;
 	}
- }
- /* $Auxiliar
+}
+/* $About
+ -------------------------*/
+
+.techs {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.tech {
+	width: 150px;
+	height: 150px;
+	margin: 1rem;
+	padding: 1rem;
+}
+
+.tech-logo {
+	width: 80px;
+	height: 80px;
+	float: left;
+	margin-bottom: 20px;
+}
+
+.tech-h3 {
+	font-size: 1.5rem;
+
+	a {
+		color: $grey;
+
+		&:hover {
+			color: inherit;
+		}
+	}
+}
+
+.tect-header {
+	margin-bottom: 0.5rem;
+}
+
+.author {
+	h3 {
+		margin-bottom: 1.2em;
+	}
+
+	.author-image {
+		width: 128px;
+		height: 128px;
+		border: 4px solid darken($main_color, 15);
+		border-radius: 50%;
+		margin-right: 2rem;
+		margin-bottom: 0;
+	}
+
+	.nav-ul {
+		ul {
+			padding: 0;
+			list-style: none;
+		}
+
+		a {
+			padding: 0 0.4em;
+			color: $dark_grey;
+			font-size: 4rem;
+
+			&:hover {
+				color: $darker_grey;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+.title-h3 {
+	margin-top: 1.5em;
+	color: lighten($grey, 10);
+}
+/* $Auxiliar
   -------------------------*/
 .bg_main_color {
 	background-color: $main_color;
@@ -342,4 +422,8 @@ button {
 	margin-left: 1em;
 	font-size: 2em;
 	font-weight: 700;
+}
+
+.author {
+	margin-top: 6em !important;
 }

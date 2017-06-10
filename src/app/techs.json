@@ -1,0 +1,62 @@
+[
+	{
+		"title": "JavaScript",
+		"link": "https://www.javascript.com/",
+		"logo": "app/img/js.png"
+	},
+	{
+		"title": "Angular 1",
+		"link": "https://angularjs.org/",
+		"logo": "app/img/angular1.png"
+	},
+	{
+		"title": "Firebase",
+		"link": "https://firebase.google.com/",
+		"logo": "app/img/firebase.png"
+	},
+	{
+		"title": "Sass",
+		"link": "http://sass-lang.com/",
+		"logo": "app/img/sass.png"
+	},
+	{
+		"title": "Bootstrap",
+		"link": "http://getbootstrap.com/",
+		"logo": "app/img/bootstrap.png"
+	},
+	{
+		"title": "GitHub",
+		"link": "https://github.com/",
+		"logo": "app/img/github.png"
+	},
+	{
+		"title": "Gulp",
+		"link": "http://gulpjs.com/",
+		"logo": "app/img/gulp.png"
+	},
+	{
+		"title": "Bower & NPM",
+		"link": "https://bower.io/",
+		"logo": "app/img/bower.png"
+	},
+	{
+		"title": "NodeJS",
+		"link": "https://nodejs.org/",
+		"logo": "app/img/nodejs.png"
+	},
+	{
+		"title": "Browser sync",
+		"link": "https://www.browsersync.io/",
+		"logo": "app/img/browsersync.png"
+	},
+	{
+		"title": "Yeoman",
+		"link": "http://yeoman.io/",
+		"logo": "app/img/yeoman.png"
+	},
+	{
+		"title": "Atom",
+		"link": "https://atom.io/",
+		"logo": "app/img/atom.png"
+	}
+]
