@@ -27,6 +27,20 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
 				$log.log('');
 			}
 		})
+		.state('app.rules', {
+			url: 'rules',
+			template: '<hanoi-rules></hanoi-rules>',
+			controller: function($log) {
+				$log.log('');
+			}
+		})
+		.state('app.about', {
+			url: 'about',
+			template: '<hanoi-about></hanoi-about>',
+			controller: function($log) {
+				$log.log('');
+			}
+		})
 		.state('app.game', {
 			url: ':gameId',
 			template: '<hanoi-game></hanoi-game>',

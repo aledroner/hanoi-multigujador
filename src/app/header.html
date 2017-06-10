@@ -1,14 +1,21 @@
 <header class="header bg_light_grey">
-	<div class="container">
-		<nav class="navbar d-flex flex-row justify-content-start align-items-center">
-			<a ui-sref="app" class="animated infinite jellos">
-				<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
-			</a>
-			<a class="header-title" ui-sref="app">Hanoi</a>
+	<nav class="container navbar navbar-toggleable-md navbar-light bg-faded">
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+	    	<span class="navbar-toggler-icon"></span>
+	  	</button>
+		<a ui-sref="app" class="animated infinite jellos">
+		  	<img src="app/img/logo.png" width="30" height="30" class="logo" alt="">
+	  	</a>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link" ui-sref="app.home" ui-sref-active="active">Inicio</a>
+				<a class="nav-item nav-link" ui-sref="app.rules" ui-sref-active="active">Reglas</a>
+				<a class="nav-item nav-link" ui-sref="app.about" ui-sref-active="active">Acerca de...</a>
+			</div>
 			<div ng-if="$ctrl.isLogged" class="log-buttons d-flex ml-auto">
 				<a ng-click="$ctrl.signOut()" id="btn-signOut" class="nav-links">Cerrar sesión </a>
 				<img id="log-player1-picture" class="turn player-picture" ng-src="{{$ctrl.profilePicture}}">
 			</div>
-		</nav>
-	</div>
+		</div>
+	</nav>
 </header>

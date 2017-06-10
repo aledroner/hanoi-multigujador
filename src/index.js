@@ -8,7 +8,9 @@ angular
 		'hanoi.footer',
 		'hanoi.login',
 		'hanoi.home',
-		'hanoi.game'
+		'hanoi.game',
+		'hanoi.rules',
+		'hanoi.about'
 	])
 	.config(function(toastrConfig) { // Configura los toastr
 		angular.extend(toastrConfig, {
