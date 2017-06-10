@@ -1,4 +1,4 @@
-<div id="game">
+<div id="game" ng-controller="CanvasCtrl as canvas">
 	<div class="game d-flex flex-row">
 
 		<div id="player1" class="player">
@@ -6,7 +6,7 @@
 				<img id="player1-picture" class="turn player-picture" src="{{$ctrl.player1.picture}}">
 				<h3 id="player1-name">{{$ctrl.player1.name}}</h3>
 			</div>
-			<div class="canvas-content" ng-controller="CanvasCtrl">
+			<div class="canvas-content">
 				<canvas id="player1-canvas" class="canvas"></canvas>
 			</div>
 			<nav id="controlls" class="controls text-center">
