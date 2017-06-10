@@ -9,7 +9,7 @@ angular
 			const REF_USERS = getRef('users');
 			const REF_GAMES = getRef('games');
 
-			VM.player2 = {
+			VM.player1 = VM.player2 = {
 				name: 'Esperando...',
 				picture: 'app/img/user.png'
 			}

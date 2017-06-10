@@ -134,7 +134,7 @@ angular
 						date: new Date().getTime(),
 						id: gameId,
 						level: level,
-						player1: user.profile,
+						player1: createObjectPlayer(user, level),
 						player2: {
 							name: 'Esperando...',
 							picture: '/app/img/user.png'
@@ -159,7 +159,7 @@ angular
 			joinGame: function(game, user) {
 				REF_GAMES.child(game.id).update({
 					full: true,
-					player2: user.profile
+					player2: createObjectPlayer(user, game.level)
 				});
 				REF_USERS.child(currentUser).update({
 					activeGame: true

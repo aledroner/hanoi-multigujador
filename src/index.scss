@@ -131,13 +131,16 @@ button {
 			height: 260px;
 		}
 
-		.controls button {
-			width: 100px;
-			margin: 0 1.3em;
-			transition: all 0.1s;
+		.controls {
+			max-width: 500px;
+			    margin: 0 auto;
+			button {
+				width: 100px;
+				transition: all 0.1s;
 
-			&:hover {
-				background-color: darken($ligth_grey, 10);
+				&:hover {
+					background-color: darken($ligth_grey, 10);
+				}
 			}
 		}
 	}
