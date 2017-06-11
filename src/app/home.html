@@ -10,20 +10,21 @@
 	</div>
 	<div class="games">
 		<table class="table">
-			<thead class="thead-default text-center">
+			<thead class="thead-default text-center" ng-init="$ctrl.orderByPropiedad='';
+			$ctrl.cabeceras=[{span:'fa-clock-o',text:'Hora',id:'date'},
+			{span:'fa-hashtag',text:' Id',id:'id'},	{span:'fa-signal',text:' Nivel',id:'level'},{span:'fa-user',text:' Jugador 1',id:'player1'},
+			{span:'fa-user',text:' Jugador 2',id:'player2'}]">
 				<tr class="text-center">
-					<th><span class="fa fa-clock-o"></span></th>
-					<th># Id</th>
-					<th><span class="fa fa-signal"></span> Nivel</th>
-					<th><span class="fa fa-user"></span> Jugador 1</th>
-					<th><span class="fa fa-user"></span> Jugador 2</th>
+					<th class="cabeceras" ng-repeat="cabecera in $ctrl.cabeceras" ng-click="$ctrl.orderByPropiedad == cabecera.id ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse=$ctrl.orderReverse ? '-':''; $ctrl.orderByPropiedad=cabecera.id" ng-class="$ctrl.orderByPropiedad != cabecera.id ? '' : 'cabecera-active'">
+						<span class="fa {{cabecera.span}}"></span> {{cabecera.text}}
+						<span class="glyphicon" ng-class="$ctrl.orderByPropiedad != cabecera.id ? 'fa fa-sort' : ($ctrl.orderReverse ? 'fa fa-sort-desc' : 'fa fa-sort-asc')"></span></th>
 					<th><span class="fa fa-gamepad"></span> Acción</th>
 				</tr>
 			</thead>
 			<tbody class="tbody">
-				<tr class="text-center" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnlineFiltrado | orderBy: '-date' track by game.id">
-					<th><span class="hour">{{game.date | date : 'HH:mm:ss'}}</span></th>
-					<th>{{game.id}}</th>
+				<tr class="text-center" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnlineFiltrado | orderBy: ($ctrl.reverse + $ctrl.orderByPropiedad) track by game.id">
+					<th><span class="hour">{{game.date | date : 'd MMM, HH:mm'}}</span></th>
+					<th class="cabeceras" ui-sref="app.game({gameId:game.id})">{{game.id}}</th>
 					<th>{{game.level}}</th>
 					<td><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}}</td>
 					<td><img class="turn player-picture" ng-src="{{game.player2.picture}}">{{game.player2.name}}</td>

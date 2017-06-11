@@ -9,6 +9,16 @@ angular
 			const REF_USERS = getRef('users');
 			const REF_GAMES = getRef('games');
 
+			// Evento cuando hay un cambio en la autenticación
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+
+				} else {
+					console.log(user);
+					$state.go('app.login');
+				}
+			});
+
 			VM.player1 = VM.player2 = {
 				name: 'Esperando...',
 				picture: 'app/img/user.png'

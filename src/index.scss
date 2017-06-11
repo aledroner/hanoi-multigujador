@@ -149,6 +149,15 @@ button {
 		margin-right: 1em;
 	}
 
+	.cabeceras:hover {
+		color: lighten($primary, 20);
+		cursor: pointer;
+	}
+
+	.cabecera-active {
+		color: lighten($primary, 20);
+	}
+
 	tr {
 		transition: 0.1s;
 

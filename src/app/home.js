@@ -43,6 +43,8 @@ angular
 					REF_USERS.child(user.uid).on('value', function(snap) {
 						VM.userLogged = snap.val();
 					});
+				} else {
+					$state.go('app.login');
 				}
 			});
 
