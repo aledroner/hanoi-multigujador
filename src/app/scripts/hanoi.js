@@ -124,8 +124,8 @@ angular
 				// Define que el jugador actual está listo para empezar
 				if (VM.game.playerWaiting == VM.uid) {
 					VM.ready = true
-				} else if (!VM.gameStart) {
-					toastr.info(hanoi.message.game_start);
+				} else if (!VM.gameStart && VM.game.playerWaiting != undefined) {
+					toastr.info(hanoi.message.game_ready);
 				}
 
 				// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
@@ -181,16 +181,30 @@ angular
 			var disks = VM.currentUser.disks;
 			if (VM.action == 'Coger') {
 				var last = getLastDisk(tow, disks);
-				last.pos = 12;
-				VM.refCurentUser.update({
-					lastDisk: last
-				}).then(function() {
-					VM.refCurentUser.child('disks').child(last.id).update(last)
-				});
+				if (last.pos == 0) {
+					toastr.info(hanoi.message.game_towerEmpty);
+				} else {
+					last.pos = 12;
+					VM.refCurentUser.update({
+						lastDisk: last
+					}).then(function() {
+						VM.refCurentUser.child('disks').child(last.id).update(last);
+						cambiarAccion();
+					});
+				}
 			} else {
-
+				var last = getLastDisk(tow, disks);
+				if (tow == VM.lastDisk.tow) { // Suelta en misma torre
+					var noTwelve = getLastDisk(tow, disks, true);
+					last.pos = noTwelve.pos + 1;
+					VM.refCurentUser.update({
+						lastDisk: last
+					}).then(function() {
+						VM.refCurentUser.child('disks').child(last.id).update(last);
+						cambiarAccion();
+					});
+				}
 			}
-			cambiarAccion();
 		}
 
 		/**
@@ -227,19 +241,29 @@ angular
 /**
  * Devuelve la posición del último disco
  * de la torre pasada por parámetro
- * @param  {Int}   tow   El identificador de la torre
- * @param  {Array} disks Array con los discos del jugador actual
- * @return {Int}         Posición del último disco
+ * @param  {Int}     tow   		El identificador de la torre
+ * @param  {Array}   disks 		Array con los discos del jugador actual
+ * @param  {Boolean} noTwelve   No quieres que te devuelva el disco 12
+ * @return {Object}  lastDisk   Último disco
  */
-function getLastDisk(tow, disks) {
+function getLastDisk(tow, disks, noTwelve) {
 	var lastDisk = {
 		pos: 0
 	};
 	for (var i = 0; i < disks.length; i++) {
 		var disk = disks[i];
-		if (disk.tow == tow)
-			if (disk.pos > lastDisk.pos)
-				lastDisk = disk
+		if (disk.tow == tow) {
+			if (disk.pos > lastDisk.pos) {
+				if (noTwelve) {
+					if (disk.pos != 12) {
+						lastDisk = disk
+					}
+				} else {
+					lastDisk = disk
+				}
+			}
+		}
+
 	}
 	return lastDisk;
 }

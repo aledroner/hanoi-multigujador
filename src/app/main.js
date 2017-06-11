@@ -20,6 +20,7 @@ angular
 		const GAME_WAIT = 'Espera a que tu openente quiera empezar.';
 		const GAME_START = '¡QUE COMIENCE EL DU-DU-DU-DUELO!';
 		const GAME_READY = 'Tu oponente quiere jugar. ¡Pulsa el botón Empezar partida!';
+		const GAME_TOWER_EMPTY = 'Esa torre está vacía.';
 
 		var currentUser = 'noPlayer';
 
@@ -58,7 +59,8 @@ angular
 				game_deleted: GAME_DELETED,
 				game_wait: GAME_WAIT,
 				game_start: GAME_START,
-				game_start: GAME_READY
+				game_ready: GAME_READY,
+				game_towerEmpty: GAME_TOWER_EMPTY
 			},
 
 			/**
