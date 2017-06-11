@@ -1,6 +1,6 @@
 <div id="games">
 	<div class="games-title row">
-		<h4 class="col-lg-3">Partidas online</h4>
+		<h4 class="col-lg-3"><span class="fa fa-users"></span> Partidas activas</h4>
 		<div class="input-group col-lg-6">
 			<input type="text" class="form-control busqueda" placeholder="Buscar..." ng-model="$ctrl.busqueda" aria-describedby="basic-addon1" ng-change="$ctrl.actualizarArray()" ng-list=",">
 		</div>
@@ -8,12 +8,12 @@
 			<button ng-click="$ctrl.crearPartida(null)" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
 		</div>
 	</div>
-	<div class="games">
+	<div class="games games-online">
 		<table class="table">
 			<thead class="thead-default text-center" ng-init="$ctrl.orderByPropiedad='-date';
-			$ctrl.cabeceras=[{span:'fa-clock-o',text:'Hora',id:'date'},
-			{span:'fa-hashtag',text:' Id',id:'id'},	{span:'fa-signal',text:' Nivel',id:'level'},{span:'fa-user',text:' Jugador 1',id:'player1'},
-			{span:'fa-user',text:' Jugador 2',id:'player2'}]">
+			$ctrl.cabeceras=[{span:'fa-clock-o',text:'Creada',id:'date'},
+			{span:'fa-hashtag',text:' Id',id:'id'},	{span:'fa-signal',text:' Nivel',id:'level'},{span:'fa-user',text:' Jugador 1',id:'player1.name'},
+			{span:'fa-user',text:' Jugador 2',id:'player2.name'}]">
 				<tr class="text-center">
 					<th class="cabeceras" ng-repeat="cabecera in $ctrl.cabeceras" ng-click="$ctrl.orderByPropiedad == cabecera.id ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse=$ctrl.orderReverse ? '-':''; $ctrl.orderByPropiedad=cabecera.id" ng-class="$ctrl.orderByPropiedad != cabecera.id ? '' : 'cabecera-active'">
 						<span class="fa {{cabecera.span}}"></span> {{cabecera.text}}
@@ -22,7 +22,7 @@
 				</tr>
 			</thead>
 			<tbody class="tbody">
-				<tr class="text-center fila" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnlineFiltrado | orderBy: ($ctrl.reverse + $ctrl.orderByPropiedad) track by game.id">
+				<tr class="text-center fila" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnlineFiltrado | orderBy: ($ctrl.reverse + $ctrl.orderByPropiedad) | limitTo:$ctrl.totalPantalla:($ctrl.paginaActual-1)*$ctrl.totalPantallatrack by game.id">
 					<th ui-sref="app.game({gameId:game.id})"><span class="hour">{{game.date | date : 'd MMM, HH:mm'}}</span></th>
 					<th ui-sref="app.game({gameId:game.id})" class="cabeceras">{{game.id}}</th>
 					<th ui-sref="app.game({gameId:game.id})">{{game.level}}</th>
@@ -37,6 +37,35 @@
 							<button ng-if="($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid) && !game.gameStart" ng-click="$ctrl.borrarPartida(game.id, game.player1.uid, game.player2.uid)" type="button" class="btn btn-danger scale trash"><span class="fa fa-trash-o"></span>
 						</div>
 					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="archived-games games-title row">
+		<h4 class="col-lg-9"><span class="fa fa-archive"></span> Partidas archivadas</h4>
+		<div class="input-group col-lg-3">
+			<input type="text" class="form-control busqueda" placeholder="Buscar..." ng-model="$ctrl.busquedaArchivadas" aria-describedby="basic-addon1" ng-change="$ctrl.actualizarArrayArchivadas()" ng-list=",">
+		</div>
+	</div>
+	<div class="games">
+		<table class="table">
+			<thead class="cabeceras thead-default text-center" ng-init="$ctrl.orderByPropiedadArchivados='-date';
+			$ctrl.cabecerasArchivadas=[{span:'fa-clock-o',text:'Creada',id:'date'},
+			{span:'fa-hashtag',text:' Id',id:'id'},	{span:'fa-signal',text:' Nivel',id:'level'},{span:'fa-user',text:' Ganador',id:'winner.name'},
+			{span:'fa-user',text:' Perdedor',id:'loser.name'}]">
+				<tr class="text-center">
+					<th ng-repeat="cabecera in $ctrl.cabecerasArchivadas" ng-click="$ctrl.orderByPropiedadArchivados == cabecera.id ? $ctrl.orderReverse = !$ctrl.orderReverse : $ctrl.orderReverse = false; $ctrl.reverse=$ctrl.orderReverse ? '-':''; $ctrl.orderByPropiedadArchivados=cabecera.id" ng-class="$ctrl.orderByPropiedadArchivados != cabecera.id ? '' : 'cabecera-active'">
+						<span class="fa {{cabecera.span}}"></span> {{cabecera.text}}
+						<span class="glyphicon" ng-class="$ctrl.orderByPropiedadArchivados != cabecera.id ? 'fa fa-sort' : ($ctrl.orderReverse ? 'fa fa-sort-desc' : 'fa fa-sort-asc')"></span></th>
+				</tr>
+			</thead>
+			<tbody class="tbody">
+				<tr class="text-center fila" ng-repeat="game in $ctrl.gamesArchivadosFiltrado | orderBy: ($ctrl.reverse + $ctrl.orderByPropiedadArchivados) track by game.id">
+					<th><span class="hour">{{game.date | date : 'd MMM, HH:mm'}}</span></th>
+					<th>{{game.id}}</th>
+					<th>{{game.level}}</th>
+					<td><img class="turn player-picture" ng-src="{{game.winner.picture}}">{{game.winner.name}}</td>
+					<td><img class="turn player-picture" ng-src="{{game.loser.picture}}">{{game.loser.name}}</td>
 				</tr>
 			</tbody>
 		</table>

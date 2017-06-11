@@ -8,6 +8,7 @@ angular
 			const VM = this;
 			const REF_USERS = hanoi.ref.users;
 			const REF_GAMES = hanoi.ref.games;
+			const REF_GAMES_ARCHIVED = hanoi.ref.archiveGames;
 
 			// Usuario logueado
 			VM.userLogged = {
@@ -20,7 +21,7 @@ angular
 			VM.busqueda = '';
 
 			/**
-			 * Actualiza el array cada vez que se busca algo para filtrarlo
+			 * Actualiza el array de partidas online cada vez que se busca algo para filtrarlo
 			 */
 			VM.actualizarArray = function() {
 				VM.gamesOnlineFiltrado = VM.gamesOnline;
@@ -29,9 +30,30 @@ angular
 			}
 
 			// Evento que actualiza el array de partidas online
-			hanoi.ref.games.on('value', function(snap) {
+			REF_GAMES.on('value', function(snap) {
 				$timeout(function() {
 					VM.gamesOnlineFiltrado = VM.gamesOnline = $.map(snap.val(), function(value, index) {
+						return [value];
+					});
+				});
+			});
+
+			// variable que lee el input de búsqueda de archivadas
+			VM.busquedaArchivadas = '';
+
+			/**
+			 * Actualiza el array de partidas archivadas cada vez que se busca algo para filtrarlo
+			 */
+			VM.actualizarArrayArchivadas = function() {
+				VM.gamesArchivadosFiltrado = VM.gamesArchivados;
+				for (var i = 0; i < VM.busquedaArchivadas.length; i++)
+					VM.gamesArchivadosFiltrado = $filter('filter')(VM.gamesArchivadosFiltrado, VM.busquedaArchivadas[i]);
+			}
+
+			// Evento que actualiza el array de partidas archivadas
+			REF_GAMES_ARCHIVED.on('value', function(snap) {
+				$timeout(function() {
+					VM.gamesArchivadosFiltrado = VM.gamesArchivados = $.map(snap.val(), function(value, index) {
 						return [value];
 					});
 				});
@@ -122,6 +144,8 @@ angular
 				REF_GAMES.child(gameId).remove();
 				toastr.info(hanoi.message.game_deleted);
 			}
+
+
 
 		}
 	});

@@ -169,15 +169,18 @@ button {
 		margin-right: 1em;
 	}
 
-	.fila:hover {
-		cursor: pointer;
+	.games-online {
 
-		.cabeceras {
-			color: lighten($primary, 20);
-		}
+		.fila:hover {
+			cursor: pointer;
 
-		.acciones {
-			cursor: auto;
+			.cabeceras {
+				color: lighten($primary, 20);
+			}
+
+			.acciones {
+				cursor: auto;
+			}
 		}
 	}
 
@@ -214,6 +217,10 @@ button {
 		vertical-align: middle;
 		margin-top: auto;
 		margin-bottom: auto;
+	}
+
+	.archived-games {
+		margin-top: 6em;
 	}
 
 	.div-btn-games {
