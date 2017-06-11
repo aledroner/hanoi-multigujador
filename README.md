@@ -21,11 +21,11 @@ Para empezar a desarrollar y aportar nuevas ideas a esta aplicación deberás se
   ```
 
 #### 4. Instala las dependencias de bower
-    ```shell
-    $ bower install
-    ```
+  ```shell
+  $ bower install
+  ```
 
 #### 5. Genera un servidor local para desarrollar
-    ```shell
-    $ npm run serve
-    ```
+  ```shell
+  $ npm run serve
+  ```
