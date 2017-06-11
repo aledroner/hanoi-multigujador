@@ -1,7 +1,7 @@
 angular
-	.module('modal.deleteGame', [])
-	.component('modalDeleteGame', {
-		templateUrl: 'app/modals/modalDeleteGame.html',
+	.module('modal.giveUp', [])
+	.component('modalGiveUp', {
+		templateUrl: 'app/modals/modalGiveUp.html',
 		bindings: {
 			resolve: '<',
 			close: '&',
@@ -9,12 +9,10 @@ angular
 		},
 		controller: function() {
 			const VM = this;
-			VM.borrar = function() {
+			VM.rendirse = function() {
 				VM.close({
 					$value: {
-						gameId: VM.resolve.gameId,
-						player1Id: VM.resolve.player1Id,
-						player2Id: VM.resolve.player2Id
+						game: VM.resolve.game
 					}
 				});
 			};

@@ -1,13 +1,19 @@
 angular
-	.module('hanoi.canvas', [])
-	.controller('CanvasCtrl', function CanvasCtrl(hanoi, $stateParams, toastr) {
+	.module('hanoi.canvas', ['modal.giveUp'])
+	.controller('CanvasCtrl', function CanvasCtrl(hanoi, $stateParams, toastr, $uibModal) {
 
 		// Constantes
 		const VM = this;
 		const REF_USERS = getRef('users');
 		const REF_GAMES = getRef('games');
 		const GAME_ID = getParamGameId();
+		const audioGet = document.getElementById('audioGet');
+		const audioSet = document.getElementById('audioSet');
+		const audioWin = document.getElementById('audioWin');
+		const audioLose = document.getElementById('audioLose');
+
 		VM.action = 'Coger';
+		VM.transaction = true;
 
 		// Variables canvas
 		var canvas1 = document.getElementById('player1-canvas');
@@ -127,6 +133,18 @@ angular
 					toastr.info(hanoi.message.game_ready);
 				}
 
+				// Muestra un mensaje al usuario cuando acaba la partida
+				if (VM.game.winner != undefined) {
+					if (VM.game.winner == VM.uid) {
+						audioWin.play();
+						toastr.success(hanoi.message.game_win);
+					} else if (VM.game.loser == VM.uid) {
+						audioLose.play();
+						toastr.info(hanoi.message.game_lose);
+					}
+					toastr.info(hanoi.message.game_archive);
+				}
+
 				// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
 				var dataGame;
 				var p1 = {
@@ -177,35 +195,39 @@ angular
 		 * @param  {Int} tow El identificador de la torre
 		 */
 		VM.accion = function(tow) {
-			var disks = VM.currentUser.disks;
-			var last = getLastDisk(tow, disks);
-			if (VM.action == 'Coger') {
-				if (last.pos == 0) { // Si torre vacía
-					toastr.info(hanoi.message.game_towerEmpty);
-				} else { // Si torre contiene discos
-					last.pos = 12;
-					updateDisk(last);
-				}
-			} else {
-				if (tow == VM.lastDisk.tow) { // Suelta disco en misma torre
-					var noTwelve = getLastDisk(tow, disks, true);
-					last.pos = noTwelve.pos + 1;
-					updateDisk(last);
-				} else { // Suelta disco en otra torre
-					if (last.pos != 0) { // Si torre con discos
-						if (last.tam < VM.lastDisk.tam) { // Si tamaño mayor
-							toastr.warning(hanoi.message.game_ilegalMove);
-						} else { // Si correcto
-							VM.lastDisk.pos = last.pos + 1;
-							VM.lastDisk.tow = tow;
-							updateDisk(VM.lastDisk);
-						}
-					} else { // Si torre vacía
-						last.pos = 1;
-						last.tow = tow;
-						last.id = VM.lastDisk.id;
+			if (VM.transaction) {
+				var disks = VM.currentUser.disks;
+				var last = getLastDisk(tow, disks);
+				if (VM.action == 'Coger') {
+					if (last.pos == 0) { // Si torre vacía
+						toastr.info(hanoi.message.game_towerEmpty);
+					} else { // Si torre contiene discos
+						last.pos = 12;
 						updateDisk(last);
 					}
+					audioGet.play();
+				} else {
+					if (tow == VM.lastDisk.tow) { // Suelta disco en misma torre
+						var noTwelve = getLastDisk(tow, disks, true);
+						last.pos = noTwelve.pos + 1;
+						updateDisk(last);
+					} else { // Suelta disco en otra torre
+						if (last.pos != 0) { // Si torre con discos
+							if (last.tam < VM.lastDisk.tam) { // Si tamaño mayor
+								toastr.warning(hanoi.message.game_ilegalMove);
+							} else { // Si correcto
+								VM.lastDisk.pos = last.pos + 1;
+								VM.lastDisk.tow = tow;
+								updateDisk(VM.lastDisk);
+							}
+						} else { // Si torre vacía
+							last.pos = 1;
+							last.tow = tow;
+							last.id = VM.lastDisk.id;
+							updateDisk(last);
+						}
+					}
+					audioSet.play();
 				}
 			}
 		}
@@ -215,6 +237,7 @@ angular
 		 * @param  {Object} last Disco a actualizar
 		 */
 		function updateDisk(last) {
+			VM.transaction = false;
 			var move;
 			if (VM.currentUser.action == 'Coger') {
 				move = 0;
@@ -225,8 +248,16 @@ angular
 				lastDisk: last,
 				moves: VM.currentUser.moves + move
 			}).then(function() {
-				VM.refCurentUser.child('disks').child(last.id).update(last);
-				cambiarAccion();
+				VM.refCurentUser.child('disks').child(last.id).update(last)
+					.then(function() {
+						if (comprobarGanado()) {
+							VM.win = true;
+							hanoi.archiveGame(VM.game, true);
+						} else {
+							cambiarAccion();
+						}
+						VM.transaction = true;
+					});
 			});
 		}
 
@@ -248,6 +279,24 @@ angular
 		}
 
 		/**
+		 * Comprueba que el usuario ha ganado
+		 * @return {Boolean} True si ha ganado
+		 */
+		function comprobarGanado() {
+			var discosOK = 0;
+			for (var i = 0; i < VM.currentUser.disks.length && discosOK < VM.game.level; i++) {
+				if (VM.currentUser.disks[i].tow == 1) {
+					discosOK++;
+				}
+			}
+			if (discosOK == VM.game.level) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		/**
 		 * Devuelve la id del juego
 		 */
 		function getParamGameId() {
@@ -259,6 +308,33 @@ angular
 			}
 			return gameId;
 		}
+
+		/**
+		 * Muestra una ventana modal para borrar una partida
+		 * @param  {String} gameId    Id aleatoria del juego
+		 * @param  {String} player1Id Id aleatoria del jugador 1
+		 * @param  {String} player2Id Id aleatoria del jugador 2
+		 */
+		VM.modalGiveUp = function() {
+			var modalInstance = $uibModal.open({
+				animation: false,
+				component: 'modalGiveUp',
+				resolve: {
+					game: function() {
+						return VM.game;
+					},
+					uid: function() {
+						return VM.uid;
+					}
+				}
+			});
+
+			modalInstance.result.then(function(resolve) {
+				hanoi.archiveGame(resolve.game, false)
+			}, function() {
+				console.log('');
+			});
+		};
 	});
 
 /**

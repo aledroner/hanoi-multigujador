@@ -8,6 +8,7 @@ angular
 		// Constantes
 		const REF_USERS = getRef('users');
 		const REF_GAMES = getRef('games');
+		const REF_ARCHIVE_GAMES = getRef('archive-games');
 
 		// Mensajes
 		const SIGNIN = '¡Saludos! ';
@@ -22,6 +23,9 @@ angular
 		const GAME_READY = 'Tu oponente quiere jugar. ¡Pulsa el botón Empezar partida!';
 		const GAME_TOWER_EMPTY = 'Esa torre está vacía.';
 		const GAME_ILEGAL_MOVE = 'No puedes mover ese disco ahí. ¡Es demasiado grande!';
+		const GAME_WIN = '¡FELICIDADES! HAS GANADO A TU PODEROSO OPONENTE. Es mentira, en realidad era un poco malo.';
+		const GAME_LOSE = '¡OOOOOOhh! Has perdido :(';
+		const GAME_ARCHIVE = 'Partida archivada.';
 
 		var currentUser = 'noPlayer';
 
@@ -44,7 +48,8 @@ angular
 			 */
 			ref: {
 				users: REF_USERS,
-				games: REF_GAMES
+				games: REF_GAMES,
+				archiveGames: REF_ARCHIVE_GAMES
 			},
 			/**
 			 * Mensajes que se muestran al usuario
@@ -62,38 +67,10 @@ angular
 				game_start: GAME_START,
 				game_ready: GAME_READY,
 				game_towerEmpty: GAME_TOWER_EMPTY,
-				game_ilegalMove: GAME_ILEGAL_MOVE
-			},
-
-			/**
-			 * Crea un nuevo objeto en la base de datos
-			 * @param  {Object} ref    Referencia de la base de datos
-			 * @param  {Object} object Objeto a crear
-			 */
-			create: function(ref, object) {
-				ref.set(object, function(err) {
-					if (err) {
-						console.log(err.message);
-					} else {
-						console.log('SET: ', object);
-					}
-				});
-			},
-
-			/**
-			 * Actualiza un objeto de la base de datos
-			 * @param  {Object} ref    Referencia de la base de datos
-			 * @param  {String} id     Id del child a actualizar
-			 * @param  {Object} object Objeto a crear
-			 */
-			update: function(ref, id, object) {
-				ref.child(id).update(object, function(err) {
-					if (err) {
-						console.log(err.message);
-					} else {
-						console.log('UPDATE: ', object);
-					}
-				});
+				game_ilegalMove: GAME_ILEGAL_MOVE,
+				game_win: GAME_WIN,
+				game_lose: GAME_LOSE,
+				game_archive: GAME_ARCHIVE
 			},
 
 			/**
@@ -181,6 +158,76 @@ angular
 				toastr.success(GAME_JOINED + game.player1.name);
 			},
 
+			/**
+			 * Archiva un juego terminado
+			 * @param  {Object} game  El objeto del juego terminado
+			 * @param  {boolean} win  Es true si el jugador ha ganado y no se ha rendido.
+			 */
+			archiveGame: function(game, win) {
+				var gameArchive = {
+					id: game.id,
+					date: game.date,
+					level: game.level
+				}
+
+				player1 = {
+					name: game.player1.name,
+					picture: game.player1.picture,
+					uid: game.player1.uid
+				}
+
+				player2 = {
+					name: game.player2.name,
+					picture: game.player2.picture,
+					uid: game.player2.uid
+				}
+
+				var winnerUid;
+				var loserUid;
+
+				if (game.player1.uid == currentUser) {
+					if (win) {
+						gameArchive.winner = player1;
+						gameArchive.loser = player2;
+						winnerUid = player1.uid;
+						loserUid = player2.uid;
+					} else {
+						gameArchive.winner = player2;
+						gameArchive.loser = player1;
+						winnerUid = player2.uid;
+						loserUid = player1.uid;
+					}
+				} else {
+					if (win) {
+						gameArchive.winner = player2;
+						gameArchive.loser = player1;
+						winnerUid = player2.uid;
+						loserUid = player1.uid;
+					} else {
+						gameArchive.winner = player1;
+						gameArchive.loser = player2;
+						winnerUid = player1.uid;
+						loserUid = player2.uid;
+					}
+				}
+				REF_GAMES.child(game.id).update({
+					winner: winnerUid,
+					loser: loserUid
+				}).then(function() {
+					REF_ARCHIVE_GAMES.child(game.id).set(gameArchive)
+						.then(function() {
+							REF_GAMES.child(game.id).remove();
+						}).then(function() {
+							REF_USERS.child(game.player1.uid).update({
+								activeGame: false
+							});
+							REF_USERS.child(game.player2.uid).update({
+								activeGame: false
+							});
+						});
+				})
+
+			}
 		}
 	});
 

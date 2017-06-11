@@ -1,5 +1,5 @@
 angular
-	.module('hanoi.home', ['modal.levelGame', 'modal.deleteGame'])
+	.module('hanoi.home', ['modal.levelGame'])
 	.component('hanoiHome', {
 		templateUrl: 'app/home.html',
 		controller: function(hanoi, toastr, $state, $stateParams, $timeout, $uibModal, $filter) {
@@ -97,6 +97,8 @@ angular
 				});
 				modalInstance.result.then(function(level) {
 					hanoi.createGame(randomId(), level);
+				}, function() {
+					console.log('');
 				});
 			};
 
@@ -120,34 +122,6 @@ angular
 				REF_GAMES.child(gameId).remove();
 				toastr.info(hanoi.message.game_deleted);
 			}
-
-			/**
-			 * Muestra una ventana modal para borrar una partida
-			 * @param  {String} gameId    Id aleatoria del juego
-			 * @param  {String} player1Id Id aleatoria del jugador 1
-			 * @param  {String} player2Id Id aleatoria del jugador 2
-			 */
-			VM.modalDeleteGame = function(gameId, player1Id, player2Id) {
-				var modalInstance = $uibModal.open({
-					animation: false,
-					component: 'modalDeleteGame',
-					resolve: {
-						gameId: function() {
-							return gameId;
-						},
-						player1Id: function() {
-							return player1Id;
-						},
-						player2Id: function() {
-							return player2Id;
-						}
-					}
-				});
-
-				modalInstance.result.then(function(resolve) {
-					VM.borrarPartida(resolve.gameId, resolve.player1Id, resolve.player2Id);
-				});
-			};
 
 		}
 	});
