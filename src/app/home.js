@@ -2,7 +2,7 @@ angular
 	.module('hanoi.home', ['modal.levelGame', 'modal.deleteGame'])
 	.component('hanoiHome', {
 		templateUrl: 'app/home.html',
-		controller: function(hanoi, toastr, $state, $stateParams, $timeout, $uibModal) {
+		controller: function(hanoi, toastr, $state, $stateParams, $timeout, $uibModal, $filter) {
 
 			// Constantes
 			const VM = this;
@@ -16,10 +16,22 @@ angular
 				}
 			}
 
+			// variable que lee el input de búsqueda
+			VM.busqueda = '';
+
+			/**
+			 * Actualiza el array cada vez que se busca algo para filtrarlo
+			 */
+			VM.actualizarArray = function() {
+				VM.gamesOnlineFiltrado = VM.gamesOnline;
+				for (var i = 0; i < VM.busqueda.length; i++)
+					VM.gamesOnlineFiltrado = $filter('filter')(VM.gamesOnlineFiltrado, VM.busqueda[i]);
+			}
+
 			// Evento que actualiza el array de partidas online
 			hanoi.ref.games.on('value', function(snap) {
 				$timeout(function() {
-					VM.gamesOnline = $.map(snap.val(), function(value, index) {
+					VM.gamesOnlineFiltrado = VM.gamesOnline = $.map(snap.val(), function(value, index) {
 						return [value];
 					});
 				});

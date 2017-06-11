@@ -1,7 +1,12 @@
 <div id="games">
-	<div class="games-title d-flex justify-content-between">
-		<h4>Partidas online</h4>
-		<button ng-click="$ctrl.crearPartida(null)" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
+	<div class="games-title row">
+		<h4 class="col-lg-3">Partidas online</h4>
+		<div class="input-group col-lg-6">
+			<input type="text" class="form-control busqueda" placeholder="Buscar..." ng-model="$ctrl.busqueda" aria-describedby="basic-addon1" ng-change="$ctrl.actualizarArray()" ng-list=",">
+		</div>
+		<div class="crear-partida col-lg-3 d-flex justify-content-end">
+			<button ng-click="$ctrl.crearPartida(null)" type="button" class="btn btn-primary scale"><span class="fa fa-plus"></span>&nbsp; Crear partida
+		</div>
 	</div>
 	<div class="games">
 		<table class="table">
@@ -15,8 +20,8 @@
 					<th><span class="fa fa-gamepad"></span> Acción</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr class="text-center" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnline | orderBy: '-date' track by game.id">
+			<tbody class="tbody">
+				<tr class="text-center" ng-class="{'game-mine': ($ctrl.userLogged.profile.uid == game.player1.uid || $ctrl.userLogged.profile.uid == game.player2.uid)}" ng-repeat="game in $ctrl.gamesOnlineFiltrado | orderBy: '-date' track by game.id">
 					<th><span class="hour">{{game.date | date : 'HH:mm:ss'}}</span></th>
 					<th>{{game.id}}</th>
 					<th>{{game.level}}</th>
