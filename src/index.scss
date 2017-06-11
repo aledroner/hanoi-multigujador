@@ -148,7 +148,7 @@ button {
 /* $Game-online
  -------------------------*/
 #games {
-	margin-bottom: 4em;
+	margin-bottom: 6em;
 
 	.games-title {
 		margin-bottom: 0.8em;
@@ -212,6 +212,7 @@ button {
 
 	td,
 	th {
+		width: 16.66666%;
 		padding: 0;
 		text-align: center;
 		vertical-align: middle;

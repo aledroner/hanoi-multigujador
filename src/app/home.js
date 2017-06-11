@@ -29,6 +29,7 @@ angular
 					VM.gamesOnlineFiltrado = $filter('filter')(VM.gamesOnlineFiltrado, VM.busqueda[i]);
 			}
 
+
 			// Evento que actualiza el array de partidas online
 			REF_GAMES.on('value', function(snap) {
 				$timeout(function() {
@@ -38,24 +39,13 @@ angular
 				});
 			});
 
-			// variable que lee el input de búsqueda de archivadas
-			VM.busquedaArchivadas = '';
-
-			/**
-			 * Actualiza el array de partidas archivadas cada vez que se busca algo para filtrarlo
-			 */
-			VM.actualizarArrayArchivadas = function() {
-				VM.gamesArchivadosFiltrado = VM.gamesArchivados;
-				for (var i = 0; i < VM.busquedaArchivadas.length; i++)
-					VM.gamesArchivadosFiltrado = $filter('filter')(VM.gamesArchivadosFiltrado, VM.busquedaArchivadas[i]);
-			}
-
 			// Evento que actualiza el array de partidas archivadas
 			REF_GAMES_ARCHIVED.on('value', function(snap) {
 				$timeout(function() {
 					VM.gamesArchivadosFiltrado = VM.gamesArchivados = $.map(snap.val(), function(value, index) {
 						return [value];
 					});
+					VM.elementosTotales = VM.gamesArchivadosFiltrado.length;
 				});
 			});
 

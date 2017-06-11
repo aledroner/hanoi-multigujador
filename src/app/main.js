@@ -133,9 +133,6 @@ angular
 				REF_USERS.child(currentUser).update({
 					activeGame: true
 				});
-				$state.go('app.game', {
-					'gameId': gameId
-				});
 				toastr.success(GAME_CREATED);
 			},
 
@@ -164,6 +161,7 @@ angular
 			 * @param  {boolean} win  Es true si el jugador ha ganado y no se ha rendido.
 			 */
 			archiveGame: function(game, win) {
+
 				var gameArchive = {
 					id: game.id,
 					date: game.date,
@@ -173,13 +171,15 @@ angular
 				player1 = {
 					name: game.player1.name,
 					picture: game.player1.picture,
-					uid: game.player1.uid
+					uid: game.player1.uid,
+					moves: game.player1.moves
 				}
 
 				player2 = {
 					name: game.player2.name,
 					picture: game.player2.picture,
-					uid: game.player2.uid
+					uid: game.player2.uid,
+					moves: game.player2.moves
 				}
 
 				var winnerUid;
@@ -213,20 +213,15 @@ angular
 				REF_GAMES.child(game.id).update({
 					winner: winnerUid,
 					loser: loserUid
-				}).then(function() {
-					REF_ARCHIVE_GAMES.child(game.id).set(gameArchive)
-						.then(function() {
-							REF_GAMES.child(game.id).remove();
-						}).then(function() {
-							REF_USERS.child(game.player1.uid).update({
-								activeGame: false
-							});
-							REF_USERS.child(game.player2.uid).update({
-								activeGame: false
-							});
-						});
-				})
-
+				});
+				REF_ARCHIVE_GAMES.child(game.id).set(gameArchive);
+				REF_GAMES.child(game.id).remove();
+				REF_USERS.child(game.player1.uid).update({
+					activeGame: false
+				});
+				REF_USERS.child(game.player2.uid).update({
+					activeGame: false
+				});
 			}
 		}
 	});
