@@ -26,8 +26,8 @@
 					<th ui-sref="app.game({gameId:game.id})"><span class="hour">{{game.date | date : 'd MMM, HH:mm'}}</span></th>
 					<th ui-sref="app.game({gameId:game.id})" class="cabeceras">{{game.id}}</th>
 					<th ui-sref="app.game({gameId:game.id})">{{game.level}}</th>
-					<td ui-sref="app.game({gameId:game.id})"><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}}</td>
-					<td ui-sref="app.game({gameId:game.id})"><img class="turn player-picture" ng-src="{{game.player2.picture}}">{{game.player2.name}}</td>
+					<td ui-sref="app.game({gameId:game.id})"><img class="turn player-picture" ng-src="{{game.player1.picture}}">{{game.player1.name}} (<span class="moves-game">{{game.player1.moves}})</span></td>
+					<td ui-sref="app.game({gameId:game.id})"><img class="turn player-picture" ng-src="{{game.player2.picture}}">{{game.player2.name}} (<span class="moves-game">{{game.player2.moves}})</span></td>
 					<td class="d-flex justify-content-center acciones">
 						<div class="div-btn-games">
 							<button ng-if="game.full==false" ng-click="$ctrl.crearPartida(game)" type="button" class="btn btn-success scale"><span class="fa fa-arrow-right"></span>

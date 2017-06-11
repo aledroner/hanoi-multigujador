@@ -1,11 +1,12 @@
 <div id="game" ng-controller="CanvasCtrl as canvas">
 	<div class="game d-flex flex-row">
 
-		<div id="player1" class="player">
+		<div class="player">
 			<div class="title-player d-flex justify-content-center align-items-center">
-				<img id="player1-picture" class="turn player-picture" src="{{$ctrl.player1.picture}}">
-				<h3 id="player1-name">{{$ctrl.player1.name}}</h3>
+				<img class="turn player-picture" src="{{$ctrl.player1.picture}}">
+				<h3>{{$ctrl.player1.name}}</h3>
 			</div>
+			<h4 class="player-moves">Movimientos: {{$ctrl.player1.moves}}</h4>
 			<div class="canvas-content">
 				<canvas id="player1-canvas" class="canvas"></canvas>
 			</div>
@@ -16,11 +17,12 @@
 			</nav>
 		</div>
 
-		<div id="player2" class="player">
+		<div class="player">
 			<div class="title-player d-flex justify-content-center align-items-center">
-				<img id="player2-picture" class="turn player-picture" src="{{$ctrl.player2.picture}}">
-				<h3 id="player2-name">{{$ctrl.player2.name}}</h3>
+				<img class="turn player-picture" src="{{$ctrl.player2.picture}}">
+				<h3>{{$ctrl.player2.name}}</h3>
 			</div>
+			<h4 class="player-moves">Movimientos: {{$ctrl.player2.moves}}</h4>
 			<div class="canvas-content">
 				<canvas id="player2-canvas" class="canvas"></canvas>
 			</div>

@@ -88,13 +88,28 @@ button {
 			height: 42px;
 		}
 
+		.player-moves {
+			text-align: center;
+			margin-top: 1em;
+			margin-bottom: 0em;
+			font-size: 1em;
+		}
+
+		.player-moves-diff {
+			font-style: italic;
+		}
+
+		.color-success {
+			color: $success;
+		}
+
 		&:first-child {
 			border-right: 1px solid $ligth_grey;
 		}
 
 		.canvas-content {
 			text-align: center;
-			margin: 2em 0;
+			margin: 0 0 2em;
 		}
 
 		canvas {
@@ -141,6 +156,10 @@ button {
 
 	.hour {
 		font-weight: normal;
+		font-style: italic;
+	}
+
+	.moves-game {
 		font-style: italic;
 	}
 

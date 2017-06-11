@@ -109,13 +109,12 @@ angular
 				VM.action = VM.currentUser.action;
 
 				// Controla que los controles sólo se muestran al jugador activo
-				if (VM.game.player1.uid === VM.uid || VM.game.player2.uid === VM.uid) {
+				if (VM.game.player1.uid === VM.uid || VM.game.player2.uid === VM.uid)
 					VM.owner = true;
-				}
 
-				// Define que el jugador actual está listo para empezar
+				// Define que la partida tiene dos jugadores
 				if (VM.game.full)
-					VM.gameFull = true
+					VM.gameFull = true;
 
 				// Define si la partida ha empezado
 				if (VM.game.gameStart)
@@ -129,6 +128,7 @@ angular
 				}
 
 				// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
+				var dataGame;
 				var p1 = {
 					ctx: ctx1,
 					disks: VM.game.player1.disks
@@ -137,14 +137,13 @@ angular
 					ctx: ctx2,
 					disks: VM.game.player2.disks
 				};
-				var dataGame;
-
 				if (VM.game.full) {
 					dataGame = [p1, p2]
 				} else {
 					dataGame = [p1]
 				}
 
+				// Si el juego ha empezado pinta el canvas con el dataGame
 				if (VM.game.gameStart) {
 					ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
 					ctx2.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -216,8 +215,15 @@ angular
 		 * @param  {Object} last Disco a actualizar
 		 */
 		function updateDisk(last) {
+			var move;
+			if (VM.currentUser.action == 'Coger') {
+				move = 0;
+			} else {
+				move = 1;
+			}
 			VM.refCurentUser.update({
-				lastDisk: last
+				lastDisk: last,
+				moves: VM.currentUser.moves + move
 			}).then(function() {
 				VM.refCurentUser.child('disks').child(last.id).update(last);
 				cambiarAccion();
