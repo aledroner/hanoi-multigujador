@@ -6,6 +6,7 @@ angular
 		const VM = this;
 		const REF_USERS = getRef('users');
 		const REF_GAMES = getRef('games');
+		const GAME_ID = getParamGameId();
 		VM.action = 'Coger';
 
 		// Variables canvas
@@ -83,70 +84,70 @@ angular
 		}
 
 		// Evento que lee el objeto del juego cada vez que hay un cambio en él
-		REF_GAMES.child($stateParams.gameId).on('value', function(snap) {
+		REF_GAMES.child(GAME_ID).on('value', function(snap) {
 			VM.game = snap.val();
-			VM.uid = firebase.auth().currentUser.uid;
-			VM.refGame = hanoi.ref.games.child(VM.game.id);
+			if (VM.game) {
+				VM.uid = firebase.auth().currentUser.uid;
+				VM.refGame = hanoi.ref.games.child(VM.game.id);
 
-			// Establece quién es el jugador actual
-			if (VM.game.player1.uid == VM.uid) {
-				VM.currentUser = VM.game.player1;
-				VM.refCurentUser = VM.refGame.child('player1');
-			} else {
-				VM.currentUser = VM.game.player2;
-				VM.refCurentUser = VM.refGame.child('player2');
-			}
+				// Establece quién es el jugador actual
+				if (VM.game.player1.uid == VM.uid) {
+					VM.currentUser = VM.game.player1;
+					VM.refCurentUser = VM.refGame.child('player1');
+				} else {
+					VM.currentUser = VM.game.player2;
+					VM.refCurentUser = VM.refGame.child('player2');
+				}
 
-			if (VM.currentUser.player1) {
-				VM.player1 = true;
-			} else {
-				VM.player2 = true;
-			}
+				if (VM.currentUser.player1) {
+					VM.player1 = true;
+				} else {
+					VM.player2 = true;
+				}
 
-			console.log(VM.currentUser);
+				VM.lastDisk = VM.currentUser.lastDisk;
+				VM.action = VM.currentUser.action;
 
-			VM.lastDisk = VM.currentUser.lastDisk;
-			VM.action = VM.currentUser.action;
+				// Controla que los controles sólo se muestran al jugador activo
+				if (VM.game.player1.uid === VM.uid || VM.game.player2.uid === VM.uid) {
+					VM.owner = true;
+				}
 
-			// Controla que los controles sólo se muestran al jugador activo
-			if (VM.game.player1.uid === VM.uid || VM.game.player2.uid === VM.uid) {
-				VM.owner = true;
-			}
+				// Define que el jugador actual está listo para empezar
+				if (VM.game.full)
+					VM.gameFull = true
 
-			// Define que el jugador actual está listo para empezar
-			if (VM.game.full)
-				VM.gameFull = true
+				// Define que el jugador actual está listo para empezar
+				if (VM.game.playerWaiting == VM.uid)
+					VM.ready = true
 
-			// Define que el jugador actual está listo para empezar
-			if (VM.game.playerWaiting == VM.uid)
-				VM.ready = true
+				// Define si la partida ha empezado
+				if (VM.game.gameStart)
+					VM.gameStart = true;
 
-			// Define si la partida ha empezado
-			if (VM.game.gameStart)
-				VM.gameStart = true;
+				// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
+				var p1 = {
+					ctx: ctx1,
+					disks: VM.game.player1.disks
+				};
+				var p2 = {
+					ctx: ctx2,
+					disks: VM.game.player2.disks
+				};
+				var dataGame;
 
-			// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
-			var p1 = {
-				ctx: ctx1,
-				disks: VM.game.player1.disks
-			};
-			var p2 = {
-				ctx: ctx2,
-				disks: VM.game.player2.disks
-			};
-			var dataGame;
+				if (VM.game.full) {
+					dataGame = [p1, p2]
+				} else {
+					dataGame = [p1]
+				}
 
-			if (VM.game.full) {
-				dataGame = [p1, p2]
-			} else {
-				dataGame = [p1]
-			}
-
-			if (VM.game.gameStart) {
-				ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
-				ctx2.clearRect(0, 0, canvas1.width, canvas1.height);
-				drawInit();
-				drawDisks(dataGame);
+				if (VM.game.gameStart) {
+					ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+					ctx2.clearRect(0, 0, canvas1.width, canvas1.height);
+					drawInit();
+					drawDisks(dataGame);
+				}
 			}
 		});
 
@@ -204,6 +205,19 @@ angular
 			} else {
 				VM.refCurentUser.update(coger)
 			}
+		}
+
+		/**
+		 * Devuelve la id del juego
+		 */
+		function getParamGameId() {
+			var gameId;
+			if ($stateParams.gameId == undefined) {
+				gameId = 'null'
+			} else {
+				gameId = $stateParams.gameId;
+			}
+			return gameId;
 		}
 	});
 

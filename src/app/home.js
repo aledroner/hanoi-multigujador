@@ -97,8 +97,6 @@ angular
 				});
 				modalInstance.result.then(function(level) {
 					hanoi.createGame(randomId(), level);
-				}, function() {
-					console.log('modal-component dismissed at: ' + new Date());
 				});
 			};
 
@@ -148,8 +146,6 @@ angular
 
 				modalInstance.result.then(function(resolve) {
 					VM.borrarPartida(resolve.gameId, resolve.player1Id, resolve.player2Id);
-				}, function() {
-					console.log('modal-component dismissed at: ' + new Date());
 				});
 			};
 

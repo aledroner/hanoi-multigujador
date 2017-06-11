@@ -5,7 +5,7 @@ angular
 /** @ngInject */
 function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
 	$locationProvider.html5Mode(true).hashPrefix('!');
-	$urlRouterProvider.when('/', '/login');
+	$urlRouterProvider.when('/', '/home');
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
@@ -13,39 +13,24 @@ function routesConfig($stateProvider, $urlRouterProvider, $locationProvider) {
 			url: '/',
 			component: 'app'
 		})
-		.state('app.login', {
-			url: 'login',
-			template: '<hanoi-login></hanoi-login>',
-			controller: function($log) {
-				$log.log('');
-			}
-		})
-		.state('app.home', {
-			url: 'home',
-			template: '<hanoi-home></hanoi-home>',
-			controller: function($log) {
-				$log.log('');
-			}
-		})
 		.state('app.rules', {
 			url: 'rules',
-			template: '<hanoi-rules></hanoi-rules>',
-			controller: function($log) {
-				$log.log('');
-			}
+			template: '<hanoi-rules></hanoi-rules>'
 		})
 		.state('app.about', {
 			url: 'about',
-			template: '<hanoi-about></hanoi-about>',
-			controller: function($log) {
-				$log.log('');
-			}
+			template: '<hanoi-about></hanoi-about>'
+		})
+		.state('app.login', {
+			url: 'login',
+			template: '<hanoi-login></hanoi-login>'
+		})
+		.state('app.home', {
+			url: 'home',
+			template: '<hanoi-home></hanoi-home>'
 		})
 		.state('app.game', {
 			url: ':gameId',
-			template: '<hanoi-game></hanoi-game>',
-			controller: function($log, $stateParams) {
-				$log.log('');
-			}
+			template: '<hanoi-game></hanoi-game>'
 		});
 }

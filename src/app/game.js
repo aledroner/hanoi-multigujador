@@ -11,10 +11,7 @@ angular
 
 			// Evento cuando hay un cambio en la autenticación
 			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-
-				} else {
-					console.log(user);
+				if (user == null) {
 					$state.go('app.login');
 				}
 			});
@@ -26,20 +23,35 @@ angular
 
 			// Si la partida no existe vuelve al home
 			REF_GAMES.on('value', function(snap) {
-				if (!snap.hasChild($stateParams.gameId)) {
+				if (!snap.hasChild(getParamGameId())) {
 					$state.go('app');
 				}
 			});
 
 			// Setea quién es el jugador 1 y el jugador 2
-			REF_GAMES.child($stateParams.gameId).on('value', function(snap) {
-				if ($stateParams.gameId != null) {
-					$timeout(function() {
-						var game = snap.val();
-						VM.player1 = snap.val().player1;
-						VM.player2 = snap.val().player2;
-					});
+			REF_GAMES.child(getParamGameId()).on('value', function(snap) {
+				if (getParamGameId() != undefined || getParamGameId() != null) {
+					if (snap.hasChild('player1')) {
+						$timeout(function() {
+							var game = snap.val();
+							VM.player1 = snap.val().player1;
+							VM.player2 = snap.val().player2;
+						});
+					}
 				}
 			});
+
+			/**
+			 * Devuelve la id del juego
+			 */
+			function getParamGameId() {
+				var gameId;
+				if ($stateParams.gameId == undefined) {
+					gameId = 'null'
+				} else {
+					gameId = $stateParams.gameId;
+				}
+				return gameId;
+			}
 		}
 	});
