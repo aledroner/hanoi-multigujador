@@ -67,7 +67,7 @@ angular
 				for (var i = 0; i < player.disks.length; i++) {
 					player.ctx.fillRect(
 						(gapX * (player.disks[i].tow + 2) + (tam / 2) * player.disks[i].tow * 4) - (player.disks[i].tam * tam / 2) - (tam * ((1 - coef) / 2)),
-						baseY + i + 1 - tam * player.disks[i].pos,
+						baseY + 1 - tam * player.disks[i].pos,
 						tam * player.disks[i].tam,
 						tam);
 				}
@@ -75,7 +75,7 @@ angular
 					player.ctx.fillStyle = colors[i]; // Bordes
 					player.ctx.fillRect(
 						(gapX * (player.disks[i].tow + 2) + (tam / 2) * player.disks[i].tow * 4) - (player.disks[i].tam * tam / 2) - (tam * ((1 - coef) / 2)) + border,
-						baseY + i + 1 - tam * player.disks[i].pos + border,
+						baseY + 1 - tam * player.disks[i].pos + border,
 						tam * player.disks[i].tam - border * 2,
 						tam - border * 2);
 				}
@@ -179,32 +179,49 @@ angular
 		 */
 		VM.accion = function(tow) {
 			var disks = VM.currentUser.disks;
+			var last = getLastDisk(tow, disks);
 			if (VM.action == 'Coger') {
-				var last = getLastDisk(tow, disks);
-				if (last.pos == 0) {
+				if (last.pos == 0) { // Si torre vacía
 					toastr.info(hanoi.message.game_towerEmpty);
-				} else {
+				} else { // Si torre contiene discos
 					last.pos = 12;
-					VM.refCurentUser.update({
-						lastDisk: last
-					}).then(function() {
-						VM.refCurentUser.child('disks').child(last.id).update(last);
-						cambiarAccion();
-					});
+					updateDisk(last);
 				}
 			} else {
-				var last = getLastDisk(tow, disks);
-				if (tow == VM.lastDisk.tow) { // Suelta en misma torre
+				if (tow == VM.lastDisk.tow) { // Suelta disco en misma torre
 					var noTwelve = getLastDisk(tow, disks, true);
 					last.pos = noTwelve.pos + 1;
-					VM.refCurentUser.update({
-						lastDisk: last
-					}).then(function() {
-						VM.refCurentUser.child('disks').child(last.id).update(last);
-						cambiarAccion();
-					});
+					updateDisk(last);
+				} else { // Suelta disco en otra torre
+					if (last.pos != 0) { // Si torre con discos
+						if (last.tam < VM.lastDisk.tam) { // Si tamaño mayor
+							toastr.warning(hanoi.message.game_ilegalMove);
+						} else { // Si correcto
+							VM.lastDisk.pos = last.pos + 1;
+							VM.lastDisk.tow = tow;
+							updateDisk(VM.lastDisk);
+						}
+					} else { // Si torre vacía
+						last.pos = 1;
+						last.tow = tow;
+						last.id = VM.lastDisk.id;
+						updateDisk(last);
+					}
 				}
 			}
+		}
+
+		/**
+		 * Actualiza en la base de datos el disco movido
+		 * @param  {Object} last Disco a actualizar
+		 */
+		function updateDisk(last) {
+			VM.refCurentUser.update({
+				lastDisk: last
+			}).then(function() {
+				VM.refCurentUser.child('disks').child(last.id).update(last);
+				cambiarAccion();
+			});
 		}
 
 		/**

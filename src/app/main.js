@@ -15,12 +15,13 @@ angular
 		const ERROR = 'Ha ocurrido un error escandaloso. Vuelva a intentarlo más tarde.';
 		const GAME_ACTIVED = 'Ya estás en una partida, no pretendas ser omnipresente.';
 		const GAME_CREATED = 'Partida creada. Ve a por un snack mientras esperas a tu oponente.';
-		const GAME_JOINED = 'Has retado al malvado ';
+		const GAME_JOINED = 'Has osado retar a ';
 		const GAME_DELETED = 'Partida directa al incinerador.';
 		const GAME_WAIT = 'Espera a que tu openente quiera empezar.';
 		const GAME_START = '¡QUE COMIENCE EL DU-DU-DU-DUELO!';
 		const GAME_READY = 'Tu oponente quiere jugar. ¡Pulsa el botón Empezar partida!';
 		const GAME_TOWER_EMPTY = 'Esa torre está vacía.';
+		const GAME_ILEGAL_MOVE = 'No puedes mover ese disco ahí. ¡Es demasiado grande!';
 
 		var currentUser = 'noPlayer';
 
@@ -60,7 +61,8 @@ angular
 				game_wait: GAME_WAIT,
 				game_start: GAME_START,
 				game_ready: GAME_READY,
-				game_towerEmpty: GAME_TOWER_EMPTY
+				game_towerEmpty: GAME_TOWER_EMPTY,
+				game_ilegalMove: GAME_ILEGAL_MOVE
 			},
 
 			/**
@@ -181,3 +183,47 @@ angular
 
 		}
 	});
+
+/**
+ * Devuelve la referencia de un objeto padre de la base de datos
+ * @param  {String} node Nodo de la base de datos a leer
+ * @return {Object}      Referencia
+ */
+function getRef(node) {
+	return firebase.database().ref(node);
+}
+
+/**
+ * Crea un objeto jugador con sus discos
+ * @param  {Object} user  Perfil del jugador unido a la partida
+ * @param  {Int}    level Número de discos de la partida
+ * @return {Object}       Perfil del jugador actualizado con los discos
+ */
+function createObjectPlayer(user, level, player1) {
+
+	var arrayDisks = [];
+	var position = 1;
+
+	for (var i = level; i > 0; i--) {
+		var disk = {
+			id: position - 1,
+			tam: i,
+			pos: position,
+			tow: -1
+		}
+		arrayDisks.push(disk);
+		position++;
+	}
+
+	var player = {
+		name: user.profile.name,
+		picture: user.profile.picture,
+		uid: user.profile.uid,
+		disks: arrayDisks,
+		moves: 0,
+		action: 'Coger',
+		player1: player1
+	}
+
+	return player;
+}
