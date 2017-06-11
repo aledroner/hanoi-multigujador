@@ -19,6 +19,7 @@ angular
 		const GAME_DELETED = 'Partida directa al incinerador.';
 		const GAME_WAIT = 'Espera a que tu openente quiera empezar.';
 		const GAME_START = '¡QUE COMIENCE EL DU-DU-DU-DUELO!';
+		const GAME_READY = 'Tu oponente quiere jugar. ¡Pulsa el botón Empezar partida!';
 
 		var currentUser = 'noPlayer';
 
@@ -56,7 +57,8 @@ angular
 				game_joined: GAME_JOINED,
 				game_deleted: GAME_DELETED,
 				game_wait: GAME_WAIT,
-				game_start: GAME_START
+				game_start: GAME_START,
+				game_start: GAME_READY
 			},
 
 			/**

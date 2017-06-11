@@ -117,13 +117,16 @@ angular
 				if (VM.game.full)
 					VM.gameFull = true
 
-				// Define que el jugador actual está listo para empezar
-				if (VM.game.playerWaiting == VM.uid)
-					VM.ready = true
-
 				// Define si la partida ha empezado
 				if (VM.game.gameStart)
 					VM.gameStart = true;
+
+				// Define que el jugador actual está listo para empezar
+				if (VM.game.playerWaiting == VM.uid) {
+					VM.ready = true
+				} else if (!VM.gameStart) {
+					toastr.info(hanoi.message.game_start);
+				}
 
 				// Objetos con el array de discos de la partida y el contexto de canvas de cada uno
 				var p1 = {

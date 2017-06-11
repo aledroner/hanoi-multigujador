@@ -156,6 +156,10 @@ button {
 		.cabeceras {
 			color: lighten($primary, 20);
 		}
+
+		.acciones {
+			cursor: auto;
+		}
 	}
 
 	.cabeceras:hover {
