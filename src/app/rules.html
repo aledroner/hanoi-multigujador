@@ -1,0 +1,21 @@
+<div class="container d-flex justify-content-center">
+	<div class="rules">
+		<h1 class="rules-title">Las Torres de Hánoi</h1>
+		<p>Corría el año 1883 cuando al matemático francés Édouard Lucas se le ocurrió que para terminar con el aburrimiento presente de la época inventaría un juego con el que romperse la cabeza. Aquel juego se llamó Las Torres de Hanói, y a día de hoy a más
+			de uno se le resiste cuando intenta resolverlo.</p>
+		<p>Las reglas del juego son realmente simples, pero que eso no te confunda. Con pocos discos el juego es relativamente fácil para un ser humano normal. Pero a medida que vamos añadiendo discos a la pila inicial, la resolución del juego puede llegar a complicarse
+			hasta niveles verdaderamente complicados, incluso para una ordenador.</p>
+		<h3 class="title-h3">Reglas</h3>
+		<p>La meta del juego consiste en pasar todos los discos de la primera varilla (la de la izquierda) que contienen los discos apilados a la última varilla (la de la derecha). Para ello hay que tener en cuenta esta serie de condiciones:</p>
+		<ol>
+			<li>Sólo se puede mover un disco a la vez en cada movimiento.</li>
+			<li>Sólo podrás posicionar un disco en una varilla que está; vacía o sobre un disco que sea mayor que á;l mismo.</li>
+			<li>Sólo se puede desplazar el disco superior de cada varilla o torre.</li>
+		</ol>
+		<p>Teniendo esto en cuenta, lo que hace interesante a este juego es cómo crece exponencialmente la dificultad a medida que aumentamos el número de discos iniciales. Aquí puedes ver una gráfica que muestra el número de movimientos mínimos necesarios para
+			superar el reto en relación a los discos en juego:</p>
+		<img class="graph" src="app/img/grafico.jpg">
+		<p>La fórmula que describe esta gráfica es la siguiente: 2^n -1. Donde "n" es el número de discos.</p>
+
+	</div>
+</div>

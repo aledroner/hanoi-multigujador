@@ -1,0 +1,41 @@
+<div id="game" ng-controller="CanvasCtrl as canvas">
+	<div class="game d-flex flex-row">
+
+		<div class="player">
+			<div class="title-player d-flex justify-content-center align-items-center">
+				<img class="turn player-picture" src="{{$ctrl.player1.picture}}">
+				<h3>{{$ctrl.player1.name}}</h3>
+			</div>
+			<h4 class="player-moves">Movimientos: {{$ctrl.player1.moves}}</h4>
+			<div class="canvas-content">
+				<canvas id="player1-canvas" class="canvas"></canvas>
+			</div>
+			<nav id="controlls" ng-if="canvas.owner && canvas.player1" class="controls text-center d-flex justify-content-around">
+				<button ng-disabled="!canvas.gameStart || canvas.win" ng-click="canvas.accion(-1)" class="btn scale">{{canvas.action}}
+				<button ng-disabled="!canvas.gameStart || canvas.win" ng-click="canvas.accion(0)" class="btn scale">{{canvas.action}}
+				<button ng-disabled="!canvas.gameStart || canvas.win" ng-click="canvas.accion(1)" class="btn scale">{{canvas.action}}
+			</nav>
+		</div>
+
+		<div class="player">
+			<div class="title-player d-flex justify-content-center align-items-center">
+				<img class="turn player-picture" src="{{$ctrl.player2.picture}}">
+				<h3>{{$ctrl.player2.name}}</h3>
+			</div>
+			<h4 class="player-moves">Movimientos: {{$ctrl.player2.moves}}</h4>
+			<div class="canvas-content">
+				<canvas id="player2-canvas" class="canvas"></canvas>
+			</div>
+			<nav id="controlls" ng-if="canvas.owner && canvas.player2" class="controls text-center d-flex justify-content-around">
+				<button ng-disabled="!canvas.gameStart || canvas.win" ng-click="canvas.accion(-1)" class="btn scale">{{canvas.action}}
+				<button ng-disabled="!canvas.gameStart || canvas.win" ng-click="canvas.accion(0)" class="btn scale">{{canvas.action}}
+				<button ng-disabled="!canvas.gameStart || canvas.win" ng-click="canvas.accion(1)" class="btn scale">{{canvas.action}}
+			</nav>
+		</div>
+	</div>
+
+	<div ng-if="canvas.owner && canvas.gameFull" class="buttons-control d-flex justify-content-around">
+		<button ng-if="!canvas.gameStart" ng-disabled="canvas.ready" ng-click="canvas.empezar();" class="btn btn-success btn-lg scale btn-start" ng-class="{'animated infinite jello': !canvas.ready}">Empezar partida
+		<button ng-if="canvas.gameStart" ng-click="canvas.modalGiveUp();" class="btn btn-danger btn-lg scale btn-start">Rendirse
+	</div>
+</div>

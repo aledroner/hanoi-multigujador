@@ -1,11 +1,13 @@
 <div class="main-container">
-	<header class="header">
-
-	</header>
-	<main class="main">
-
+	<hanoi-header></hanoi-header>
+	<main class="main" class="d-flex">
+		<ui-view>
+			<hanoi-home></hanoi-home>
+		</ui-view>
 	</main>
-	<footer class="footer">
-
-	</footer>
+	<audio id="audioGet" src="app/sounds/coger.wav" autostart="false"></audio>
+	<audio id="audioSet" src="app/sounds/coger.wav" autostart="false"></audio>
+	<audio id="audioWin" src="app/sounds/win.ogg" autostart="false"></audio>
+	<audio id="audioLose" src="app/sounds/lose.mp3" autostart="false"></audio>
+	<hanoi-footer></hanoi-footer>
 </div>
