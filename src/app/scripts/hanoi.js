@@ -129,7 +129,7 @@ angular
 				// Define que el jugador actual está listo para empezar
 				if (VM.game.playerWaiting == VM.uid) {
 					VM.ready = true
-				} else if (!VM.gameStart && VM.game.playerWaiting != undefined) {
+				} else if (!VM.gameStart && VM.game.playerWaiting != undefined && (VM.game.player1.uid == VM.uid || VM.game.player2.uid == VM.uid)) {
 					toastr.info(hanoi.message.game_ready);
 				}
 
