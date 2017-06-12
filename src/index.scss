@@ -30,7 +30,6 @@ button {
 }
 /* $Header
  -------------------------*/
-
 .header {
 	font-size: 1em;
 
@@ -58,7 +57,6 @@ button {
 }
 /* $Main
  -------------------------*/
-
 .main-container {
 	display: flex;
 	flex-direction: column;
@@ -73,6 +71,7 @@ button {
 }
 /* $Game
  -------------------------*/
+
 #game {
 	margin-bottom: 4em;
 
@@ -91,7 +90,7 @@ button {
 		.player-moves {
 			text-align: center;
 			margin-top: 1em;
-			margin-bottom: 0em;
+			margin-bottom: 0;
 			font-size: 1em;
 		}
 
@@ -147,6 +146,7 @@ button {
 }
 /* $Game-online
  -------------------------*/
+
 #games {
 	margin-bottom: 6em;
 
@@ -170,7 +170,6 @@ button {
 	}
 
 	.games-online {
-
 		.fila:hover {
 			cursor: pointer;
 
@@ -247,7 +246,6 @@ button {
 }
 /* $LogIn
  -------------------------*/
-
 .logIn {
 	padding: 3em;
 	width: 400px;
@@ -275,6 +273,7 @@ button {
 }
 /* $Footer
   -------------------------*/
+
 .footer {
 	padding: 1rem;
 	font-size: 1rem;
@@ -306,6 +305,7 @@ button {
 }
 /* $Rules
  -------------------------*/
+
 .rules {
 	text-align: justify;
 
@@ -329,6 +329,7 @@ button {
 }
 /* $About
  -------------------------*/
+
 .techs {
 	display: flex;
 	flex-direction: row;
@@ -405,7 +406,6 @@ button {
 }
 /* $Auxiliar
   -------------------------*/
-
 .bg_main_color {
 	background-color: $main_color;
 }
@@ -497,3 +497,43 @@ button {
 .author {
 	margin-top: 6em !important;
 }
+
+#table-wrapper {
+	position: relative;
+}
+
+#table-wrapper table {
+	width: 100%;
+}
+
+#table-scroll {
+	height: 300px;
+	overflow: auto;
+	margin-top: 64px;
+}
+
+#table-wrapper table thead {
+	position: absolute;
+	top: -50px;
+	z-index: 2;
+	height: 64px;
+	width: 100%;
+
+	tr {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+
+	th {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 20%;
+		vertical-align: middle;
+	}
+}
+
+.icon-left {margin-right: 7px;}
+.icon-right {margin-left: 7px;}
